@@ -33,8 +33,8 @@ resource "google_container_cluster" "k8s" {
   project            = var.project
   depends_on         = [google_project_service.container]
   location           = var.location
-  logging_service    = "logging.googleapis.com/kubernetes"
-  monitoring_service = "monitoring.googleapis.com/kubernetes"
+  # logging_service    = "logging.googleapis.com/kubernetes"
+  # monitoring_service = "monitoring.googleapis.com/kubernetes"
 
   # need to create a default node pool
   # delete this immediately
