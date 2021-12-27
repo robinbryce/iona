@@ -93,4 +93,8 @@ needs an api token for terraform cloud. T
     terraform plan
     ```
 
-
+# configure github access
+* [ ] for personal accounts, go to settins/applications/terraform cloud, add
+    this repository to the list of repositories terraform is allowed to access,
+    add this repository to the list of repositories terraform is allowed to
+    access
