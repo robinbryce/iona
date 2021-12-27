@@ -33,6 +33,9 @@ resource "google_container_cluster" "k8s" {
   project            = var.project
   depends_on         = [google_project_service.container]
   location           = var.location
+  # it appearst that logging & monitoring _service are mutually exclusive with
+  # logging_config and monitoring_config. And the latter two are the more
+  # modern way
   # logging_service    = "logging.googleapis.com/kubernetes"
   # monitoring_service = "monitoring.googleapis.com/kubernetes"
 
