@@ -14,6 +14,7 @@ locals {
   # All remote state references are via variables with short cuts in the
   # locals.
   gcp_project_id = data.terraform_remote_state.cluster.outputs.gcp_project_id
+  gcp_project_name = data.terraform_remote_state.cluster.outputs.gcp_project_name
   gcp_project_region = data.terraform_remote_state.cluster.outputs.gcp_project_region
   gcp_project_zone = data.terraform_remote_state.cluster.outputs.gcp_project_zone
   static_ingress = data.terraform_remote_state.cluster.outputs.static_ingress
