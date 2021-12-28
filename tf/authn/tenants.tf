@@ -23,7 +23,7 @@ resource "google_identity_platform_tenant" "admin_tenant" {
   allow_password_signup = true
 }
 
-resource "google_identity_platform_tenant_default_supported_idp_config" "admin_idp_config" {
+resource "google_identity_platform_tenant_default_supported_idp_config" "idp_config" {
   project = local.gcp_project_id
   enabled       = true
   tenant        = google_identity_platform_tenant.admin_tenant.name
