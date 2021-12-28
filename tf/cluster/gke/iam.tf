@@ -22,8 +22,8 @@ resource "google_project_iam_custom_role" "kubeip" {
 }
 
 resource "google_project_iam_member" "iam_member_kubeip" {
-  project = var.gcp_project_id
-  role = "projects/${var.gcp_project_id}/roles/kubeip"
+  project = var.project
+  role = "projects/${var.project}/roles/kubeip"
   member = "serviceAccount:${google_service_account.workloads["kubeip"].email}"
 }
 
