@@ -2,6 +2,10 @@ variable "project" {
   type = string
 }
 
+variable "project_fqdn" {
+  type = string
+}
+
 variable "gcp_project_name" {
   type = string
 }
