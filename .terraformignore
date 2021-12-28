@@ -1,6 +1,7 @@
 .git/
 .terraform/
 tf/cluster/.terraform
+tf/cluster-k8s/.terraform
 tf/authn/.terraform
 .*
 credentials/

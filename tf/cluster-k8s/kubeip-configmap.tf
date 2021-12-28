@@ -1,9 +1,10 @@
-resource "kubernetes_config_map" "kubeip-config" {
+resource "kubernetes_config_map_v1" "kubeip-config" {
   metadata {
     labels = {
       app = "kubeip"
     }
     name = "kubeip-config"
+    namepsace = "kube-system"
   }
 
   data = {

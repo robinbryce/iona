@@ -30,12 +30,17 @@ what to set monitoring_service to for google_container_cluster
 * [ ] Enable the Compute Engine API
 * [ ] Enable Kubernetes Engine API
 * [ ] Enable Cloud DNS API
+* [ ] Enable Cloud Domains API
 * [ ] Enable Secrets Manager API
 * [ ] Enable Cloud Identity Aware Proxy
 * [ ] Enable Identity Platform
 
 All can be found at APIs & Services / API Library except secrets manager.
 Secrets Manager API can be found in the Security menu
+
+## register a domain for the cluster
+
+With cloud domains
 
 ## Create service account key for terraform
 
@@ -55,6 +60,8 @@ IAM & Admin / IAM -> Compute Engine Default Service account -> Add another role 
 * [ ] Project IAM Admin
 * [ ] Role Administrator
 * [ ] Cloud Resource Manager
+* [ ] Kubernetes Engine Service Agent - so that the kubernetes provider can
+    create cluster roles and cluster role bindings
 
 ## Cluster DNS Verification
 
@@ -71,6 +78,17 @@ project before the tf can be applied.
       Settings/Security/Allow tenants
 * [ ] add the oauth domain
       Settings/Security/ add domain
+
+## Create Client ID & Secret for each tenant
+
+Create Oauth client ID in credentials api
+* [ ] create client id and secret for use with the google provider [see](https://cloud.google.com/identity-platform/docs/web/google?hl=en_GB)
+
+* [ ] add appropriate test user emails to the oauth consent screen (while the app is
+    in test status public sign up isn't possible)
+
+* [ ] add admin_tenant_client_id & _secret variables to the -authn workspace
+* [ ] add public_tenant_client_id & _secret variables to the -authn workspace
 
 https://cloud.google.com/identity-platform/docs/multi-tenancy
 https://cloud.google.com/identity-platform/docs/multi-tenancy-quickstart
