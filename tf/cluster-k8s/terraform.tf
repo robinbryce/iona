@@ -16,4 +16,10 @@ terraform {
       version = "~> 2.7.1"
     }
   }
+  backend "remote" {
+    organization = "robinbryce"
+    workspaces {
+      name = "iona-cluster-k8s"
+    }
+  }
 }
