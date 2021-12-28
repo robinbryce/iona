@@ -5,6 +5,7 @@
 resource "kubernetes_deployment_v1" "kubeip" {
   metadata {
     name = "kubeip"
+    namespace = "kube-system"
   }
 
   spec {
