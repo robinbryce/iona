@@ -14,5 +14,5 @@ resource "google_service_account_iam_member" "workloads" {
 
   service_account_id = google_service_account.workloads[each.key].name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "${var.project_fqdn}[${each.value[0]}/${each.value[1]}]"
+  member             = "serviceAccount:${var.project}.svc.id.goog[${each.value[0]}/${each.value[1]}]"
 }
