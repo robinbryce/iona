@@ -5,6 +5,7 @@ output "admin_tenant" { value = var.admin_tenant }
 
 
 resource "google_identity_platform_tenant" "admin_tenant" {
+  project = local.gcp_project_id
   display_name = "${var.admin_tenant}"
   allow_password_signup = true
 }
@@ -15,6 +16,7 @@ variable "public_tenant" {
 output "public_tenant" { value = var.public_tenant }
 
 resource "google_identity_platform_tenant" "public_tenant" {
+  project = local.gcp_project_id
   display_name = "${var.public_tenant}"
   allow_password_signup = true
 }
