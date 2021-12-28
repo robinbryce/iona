@@ -10,7 +10,12 @@ Named after [Iona](https://en.ikipedia.org/wiki/Wikipedia:WikiProject_Scottish_I
 
 # Plan
 
-enable monitoring and logging
+* [/] create the cluster
+* [ ] enable monitoring and logging
+* [ ] configure static ip assignment for ingress pool
+* [ ] use no-ip dynamic-dns for dns
+* [ ] enable letsencrypt with no-ip domain [see](https://hometechhacker.com/letsencrypt-certificate-dns-verification-noip/)
+* [ ] update cluster to use node ports for external access
 
 what to set monitoring_service to for google_container_cluster
 
@@ -26,6 +31,8 @@ what to set monitoring_service to for google_container_cluster
 * [ ] Enable Kubernetes Engine API
 * [ ] Enable Cloud DNS API
 * [ ] Enable Secrets Manager API
+* [ ] Enable Cloud Identity Aware Proxy
+* [ ] Enable Identity Platform
 
 All can be found at APIs & Services / API Library except secrets manager.
 Secrets Manager API can be found in the Security menu
@@ -49,6 +56,28 @@ IAM & Admin / IAM -> Compute Engine Default Service account -> Add another role 
 * [ ] Role Administrator
 * [ ] Cloud Resource Manager
 
+## Cluster DNS Verification
+
+* [ ] verify a subdomain of thaumagen.com for iona.
+    [see](https://cloud.google.com/identity/docs/add-cname#7334202)
+
+## Identity Platform & Identity Aware Proxy
+
+Aspects of the identiy platform that must be manualy configured for a new GCP
+project before the tf can be applied.
+
+* [ ] enabled identity plaform
+* [ ] enable multi-tenancy
+      Settings/Security/Allow tenants
+* [ ] add the oauth domain
+      Settings/Security/ add domain
+
+https://cloud.google.com/identity-platform/docs/multi-tenancy
+https://cloud.google.com/identity-platform/docs/multi-tenancy-quickstart
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/identity_platform_tenant
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/identity_platform_oauth_idp_config
+
+
 # Terraform Cloud Check List
 
 ## Create a workspace and link it to this repository
@@ -63,6 +92,7 @@ IAM & Admin / IAM -> Compute Engine Default Service account -> Add another role 
 * [ ] Create the workspace variable gke_project_id and set it to the name of your gcp project
 * [ ] Add GOOGLE_CLOUD_KEYFILE_JSON as an environment variable with the value
       set to the 'single line' form of the compute engine default service key. `tr -d '\n' < project-sa-key.json`
+* [ ] Create project_fqdn variable and set it to <project>.thaumagen.com (thaumagen.com is verified with gcp)
 
 ## Confirm the settings
 
@@ -100,3 +130,7 @@ needs an api token for terraform cloud. T
     add this repository to the list of repositories terraform is allowed to
     access
 * [ ] For organisations, go to Settings/Installed Git Hub Apps and do the same
+
+# Configure kubectl access
+
+* [ ] gcloud --project=iona-1 container clusters get-credentials kluster
