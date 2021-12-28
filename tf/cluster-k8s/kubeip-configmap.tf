@@ -4,7 +4,7 @@ resource "kubernetes_config_map_v1" "kubeip-config" {
       app = "kubeip"
     }
     name = "kubeip-config"
-    namepsace = "kube-system"
+    namespace = "kube-system"
   }
 
   data = {
