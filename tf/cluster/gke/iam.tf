@@ -1,3 +1,31 @@
+# -----------------------------------------------------------------------------
+# kubeip service account and role
+# -----------------------------------------------------------------------------
+resource "google_project_iam_custom_role" "kubeip" {
+  role_id = "kubeip"
+  title = "kubeip role"
+  project = var.project
+
+  permissions = [
+    "compute.addresses.list",
+    "compute.instances.addAccessConfig", "compute.instances.deleteAccessConfig",
+    "compute.instances.get",
+    "compute.instances.list",
+    "compute.projects.get",
+    "container.clusters.get",
+    "container.clusters.list",
+    "resourcemanager.projects.get",
+    "compute.networks.useExternalIp",
+    "compute.subnetworks.useExternalIp",
+    "compute.addresses.use",
+  ]
+}
+
+resource "google_project_iam_member" "iam_member_kubeip" {
+  project = local.gcp_project_id
+  role = "projects/${local.gcp_project_id}/roles/kubeip"
+  member = "serviceAccount:${google_service_account.workloads["kubeip"].email}"
+}
 
 # -----------------------------------------------------------------------------
 # cluster service account and role
