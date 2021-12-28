@@ -24,9 +24,10 @@ resource "google_identity_platform_tenant" "admin_tenant" {
 }
 
 resource "google_identity_platform_tenant_default_supported_idp_config" "idp_config" {
+  project = local.gcp_project_id
   enabled       = true
   tenant        = google_identity_platform_tenant.admin_tenant.name
-  idp_id        = "playgames.google.com"
+  idp_id        = "google.com"
   client_id     = "${var.admin_tenant_client_id}"
   client_secret = "${var.admin_tenant_client_secret}"
 }
@@ -38,6 +39,15 @@ variable "public_tenant" {
   type = string
 }
 output "public_tenant" { value = var.public_tenant }
+
+variable "public_tenant_client_id" {
+  type = string
+}
+output "public_tenant_client_id" { value = var.public_tenant_client_id }
+
+variable "public_tenant_client_secret" {
+  type = string
+}
 
 resource "google_identity_platform_tenant" "public_tenant" {
   project = local.gcp_project_id
