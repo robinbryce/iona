@@ -1,8 +1,12 @@
-
 variable "gcp_project_id" {
   type = string
 }
 output "gcp_project_id" { value = var.gcp_project_id }
+
+variable "project_fqdn" {
+  type = string
+}
+output "project_fqdn" { value = var.project_fqdn }
 
 variable "gcp_project_name" {
     type = string
@@ -34,6 +38,7 @@ output "cluster_name" { value = var.cluster_name }
 module "cluster" {
 
   project                             = var.gcp_project_id
+  project_fqdn                        = var.project_fqdn
   gcp_project_name                    = var.gcp_project_name
   source                              = "./gke"
   region                              = var.gcp_project_region
