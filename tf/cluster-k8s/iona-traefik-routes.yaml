@@ -1,4 +1,9 @@
 http:
+  services:
+    nginx:
+      loadBalancer:
+        servers:
+          - url: http://nginx.iona:80/
   routers:
     iona-thaumagen-io-tls:
       entryPoints:
