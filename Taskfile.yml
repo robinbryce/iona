@@ -1,0 +1,39 @@
+---
+version: '3'
+silent: true
+
+vars:
+  CONTEXT: iona-1
+  CLUSTER: gke_iona-1_europe-west2-a_kluster
+  KUBECTL: kubectl --context {{.CONTEXT}} --cluster {{.CLUSTER}}
+  CLUSTER_NAMESPACE: iona
+
+tasks:
+  default:
+    cmds:
+      - |
+        echo "\
+        Available customisation vars. Set like this `task <taskname> VAR=xyz`
+        for any task which uses them.
+
+        global
+
+          CONTEXT: {{.CONTEXT}}
+          CLUSTER: {{.CLUSTER}}
+          KUBECTL: {{.KUBECTL}}"
+
+  iona-delete-envoy-lb:
+    desc: delete the envoy-lb deployment after a force canceled tf apply
+    cmds:
+      - task: delete-deployment
+        vars: {D: "envoy-lb", N: "iona"}
+
+  delete-deployment:
+    desc: task delete-deployment D=envoy-lb
+    vars:
+      D: ""
+      N: "{{.CLUSTER_NAMESPACE}}"
+    cmds:
+      - |
+        [ -z "{{.D}}" ] && echo "D not set" && exit -1
+        {{.KUBECTL}} -n {{.N}} delete deployment {{.D}}

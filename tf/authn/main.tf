@@ -4,6 +4,13 @@ variable "cluster_workspace" {
 }
 output "cluster_workspace" { value = var.cluster_workspace }
 
+variable "cluster_k8s_workspace" {
+  type = string
+  default = "cluster-k8s"
+}
+output "cluster_k8s_workspace" { value = var.cluster_k8s_workspace }
+
+
 variable "cluster_name" {
     type = string
     default = "kluster"
@@ -21,6 +28,7 @@ locals {
   # this is the workload identity base for the cluster. All workload identities
   # are constructed from this - thats how they work.
   workloadid_fqdn = "serviceAccount:${data.terraform_remote_state.cluster.outputs.gcp_project_id}.svc.id.goog"
+  cluster_namespace = data.terraform_remote_state.cluster-k8s.outputs.cluster_namespace
 }
 
 data "terraform_remote_state" "cluster" {
@@ -34,6 +42,17 @@ data "terraform_remote_state" "cluster" {
   }
 }
 
+data "terraform_remote_state" "cluster-k8s" {
+  backend = "remote"
+  config = {
+    organization = "robinbryce"
+    workspaces = {
+      # name = "iona-1"
+      name = var.cluster_k8s_workspace
+    }
+  }
+}
+
 data "google_client_config" "provider" {}
 data "google_container_cluster" "project" {
   name = var.cluster_name
@@ -42,7 +61,7 @@ data "google_container_cluster" "project" {
 }
 
 provider "kubernetes" {
-  load_config_file = "false"
+  # load_config_file = "false"
   host = "https://${data.google_container_cluster.project.endpoint}"
   token = data.google_client_config.provider.access_token
   cluster_ca_certificate = base64decode(
