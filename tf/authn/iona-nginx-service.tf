@@ -7,7 +7,7 @@ resource "kubernetes_service_v1" "iona-nginx" {
     type = "ClusterIP"
     selector = {
       "app.kubernetes.io/name" = "nginx"
-      "app.kubernetes.io/name" = "iona-authn"
+      "app.kubernetes.io/part-of" = "iona-authn"
     }
     port {
       name = "tcp-80"
