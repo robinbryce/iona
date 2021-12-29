@@ -7,11 +7,11 @@ resource "kubernetes_manifest" "iona-nginx-route" {
       namespace = "${local.cluster_namespace}"
     }
     spec = {
-      entrypoints = [ "websecure" ]
+      entrypoints = [ "websecure", "web" ]
       routes = [{
         match = "Host(`${local.gcp_project_name}.thaumagen.io`) && PathPrefix(`/static`)"
         kind = "Rule"
-        services = [{ name = "nginx-web", port = "80" }]
+        services = [{ name = "nginx", port = "80" }]
       }]
       tls = {
         cert_resolver = "letsencrypt"

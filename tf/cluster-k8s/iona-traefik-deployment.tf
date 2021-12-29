@@ -67,7 +67,6 @@ resource "kubernetes_deployment_v1" "traefik" {
             name = "admin"
           }
 
-
           args = [
             "-cx",
             <<-EOT
