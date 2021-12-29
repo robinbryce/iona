@@ -1,0 +1,86 @@
+replicas: 1
+selector:
+  matchLabels:
+    app.kubernetes.io/name: traefik-web
+    app.kubernetes.io/part-of: traefik-web
+strategy:
+  # The taints don't allow > 1 pod to run, so rolling update can't work. Also
+  # traefik community edition and lets encrypt don't work together if > 1.
+  type: Recreate
+
+template:
+  metadata:
+    labels:
+      app.kubernetes.io/name: traefik-web
+      app.kubernetes.io/part-of: traefik-web
+  spec:
+    serviceAccountName: dns01solver-sa
+    automountServiceAccountToken: true
+    nodeSelector:
+      cloud.google.com/gke-nodepool: ingress-pool
+    tolerations:
+      - effect: NoExecute
+        key: ingress-pool
+        operator: Equal
+        value: "true"
+    volumes:
+      # this volume dies with the pod but survives container re-start.
+      # cert-manager is the better answer if our pods restart enough to hit
+      # letsencrypt rate limits. The config is left on the staging
+      # letsencrypt provider to avoid that issue.
+      - name: acme-certs
+    containers:
+      - name: traefik
+        image: "traefik:latest"
+        volumeMounts:
+          - name: acme-certs
+            mountPath: /var/run/acme
+        env:
+          - name: ACME_EMAIL
+            value: noreply@quorumpreempt.dev
+        command:
+          - sh
+        args:
+          - -cx
+          - |
+            set -e
+            traefik \
+              --api.insecure=true \
+              --entrypoints.web.address=:80 \
+              --entrypoints.websecure.address=:443 \
+              --entrypoints.ping.address=:10254 \
+              --ping.entrypoint=ping \
+              --log.level=DEBUG \
+              --providers.kubernetescrd \
+              --certificatesresolvers.letsencrypt.acme.dnschallenge=true \
+              --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud \
+              --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory \
+              --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL} \
+              --certificatesresolvers.letsencrypt.acme.storage=/var/run/acme/acme-staging.json
+        ports:
+          - name: web
+            containerPort: 80
+          - name: websecure
+            containerPort: 443
+          - name: admin
+            containerPort: 8080
+
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ping
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ping
+            port: 10254
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
