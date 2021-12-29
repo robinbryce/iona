@@ -5,7 +5,7 @@ http:
         - web
         - websecure
       rule: Host(`iona.thaumagen.io`) && PathPrefix(`/static`)
-      service: iona/nginx
+      service: nginx
       tls:
         certResolver: letsencrypt
         domains:
