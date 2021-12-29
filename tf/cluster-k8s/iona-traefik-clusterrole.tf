@@ -22,12 +22,14 @@ resource "kubernetes_cluster_role" "traefik" {
     api_groups = ["traefik.containo.us"]
     resources  = [
       "middlewares",
+      "middlewaretcps",
       "ingressroutes",
       "traefikservices",
       "ingressroutetcps",
       "ingressrouteudps",
       "tlsoptions",
-      "tlsstores"
+      "tlsstores",
+      "serverstransports"
     ]
     verbs      = ["get", "list", "watch"]
   }
