@@ -8,7 +8,6 @@ resource "kubernetes_manifest" "ingressroutes" {
     spec = {
       group = "traefik.containo.us"
       scope = "Namespaced"
-      preserveUnknownFields = true
       names = {
         kind = "IngressRoute"
         plural = "ingressroutes"
@@ -21,6 +20,7 @@ resource "kubernetes_manifest" "ingressroutes" {
         storage = true
         schema = {
           openAPIV3Schema = {
+            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
               data = {
