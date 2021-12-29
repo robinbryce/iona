@@ -7,7 +7,7 @@ overload_manager:
   resource_monitors:
   - name: "envoy.resource_monitors.fixed_heap"
     typed_config:
-      "@type": type.googleapis.com/envoy.resource_monitors.fixed_heap.v3.FixedHeapConfig
+      "@type": type.googleapis.com/envoy.extensions.resource_monitors.fixed_heap.v3.FixedHeapConfig
       # max_heap_size_bytes: 2147483648 # 2 GiB
       max_heap_size_bytes: 268435456 # 256 MB
   actions:
