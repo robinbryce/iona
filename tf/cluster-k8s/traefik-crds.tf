@@ -62,9 +62,12 @@ resource "kubernetes_manifest" "middlewares" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
@@ -101,9 +104,12 @@ resource "kubernetes_manifest" "ingressroutetcps" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
@@ -140,9 +146,12 @@ resource "kubernetes_manifest" "ingressrouteudps" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
@@ -179,9 +188,12 @@ resource "kubernetes_manifest" "tlsoptions" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
@@ -218,9 +230,12 @@ resource "kubernetes_manifest" "tlsstores" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
@@ -257,9 +272,12 @@ resource "kubernetes_manifest" "traefikservices" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
