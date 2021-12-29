@@ -68,8 +68,8 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
             name = "admin"
           }
           args = [
-            "--config-path /etc/envoy/envoy.yaml"
-            #- "--component-log-level upstream:debug,connection:trace"
+            "--config-path /etc/envoy/envoy.yaml",
+            "--component-log-level upstream:debug,connection:trace"
           ]
           command = [ "/usr/local/bin/envoy" ]
           liveness_probe {
