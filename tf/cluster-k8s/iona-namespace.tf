@@ -6,3 +6,4 @@ resource "kubernetes_namespace_v1" "cluster" {
     }
   }
 }
+output "cluster_namespace" { value = kubernetes_namespace_v1.cluster.metadata[0].name }
