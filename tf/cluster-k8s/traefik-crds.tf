@@ -166,6 +166,48 @@ resource "kubernetes_manifest" "ingressrouteudps" {
   }
 }
 
+resource "kubernetes_manifest" "serverstransports" {
+  manifest = {
+    apiVersion = "apiextensions.k8s.io/v1beta1"
+    kind = "CustomResourceDefinition"
+    metadata = {
+      name = "serverstransports.traefik.containo.us"
+    }
+    spec = {
+      group = "traefik.containo.us"
+      scope = "Namespaced"
+      names = {
+        kind = "ServersTransport"
+        plural = "serverstransports"
+        singular = "serverstransport"
+      }
+
+      versions = [{
+        name    = "v1alpha1"
+        served  = true
+        storage = true
+        schema = {
+          openAPIV3Schema = {
+            type = "object"
+            properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
+              data = {
+                type = "string"
+              }
+              refs = {
+                type = "number"
+              }
+            }
+          }
+        }
+      }]
+    }
+  }
+}
+
 resource "kubernetes_manifest" "tlsoptions" {
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
