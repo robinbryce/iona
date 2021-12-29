@@ -8,6 +8,7 @@ resource "kubernetes_manifest" "ingressroutes" {
     spec = {
       group = "traefik.containo.us"
       scope = "Namespaced"
+      preserveUnknownFields = true
       names = {
         kind = "IngressRoute"
         plural = "ingressroutes"
