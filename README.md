@@ -2,20 +2,38 @@
 
 Named after [Iona](https://en.ikipedia.org/wiki/Wikipedia:WikiProject_Scottish_Islands/Islands_by_population_densityw) is a scottish island with a population of ~120
 
+# Warts
+
+* terraforms kubernetes provider doesn't seem smart enough to remove
+  deployments part created by force canceled runs. After a force cancelation,
+  its necessary to delete the envoy-lb or traefik deployments if the failed to
+  individually apply
+* terraform kubnernetes provider waits forever if a deployment doesn't come
+  ready due to errors and needs to be force canceled
+
 # Cluster features
 
 - logging and monitoring enabled
-- e2-standard-2 nodes
--
+- n2-standard-4 nodes
+- static-ip assigned to single instance in ingress-pool and ingress via envoy
+- traefik for dns01 letsencrypt tls certificate provisioning
 
 # Plan
 
 * [/] create the cluster
-* [ ] enable monitoring and logging
-* [ ] configure static ip assignment for ingress pool
-* [ ] use no-ip dynamic-dns for dns
-* [ ] enable letsencrypt with no-ip domain [see](https://hometechhacker.com/letsencrypt-certificate-dns-verification-noip/)
-* [ ] update cluster to use node ports for external access
+* [/] enable monitoring and logging
+* [/] configure static ip assignment for ingress pool
+* [ ] configure envoy as ingress proxy
+* [ ] congigure traefik for tls cert challenges dns01
+* [ ] investigate certmanager via terraform
+* [x] use no-ip dynamic-dns for dns
+* [x] enable letsencrypt with no-ip domain [see](https://hometechhacker.com/letsencrypt-certificate-dns-verification-noip/)
+* [?] update cluster to use node ports for external access
+
+# Future improvements
+
+* [ ] investigate kubestack for working with terraform & kustomize together.
+    [see](https://thenewstack.io/a-better-way-to-provision-kubernetes-using-terraform/)
 
 what to set monitoring_service to for google_container_cluster
 

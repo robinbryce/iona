@@ -22,17 +22,23 @@ tasks:
           CLUSTER: {{.CLUSTER}}
           KUBECTL: {{.KUBECTL}}"
 
-  iona-delete-envoy-lb:
+  iona-del-envoy-lb:
     desc: delete the envoy-lb deployment after a force canceled tf apply
     cmds:
       - task: delete-deployment
         vars: {D: "envoy-lb", N: "iona"}
 
+  iona-del-nginx:
+    desc: delete the nginx deployment after a force canceled tf apply
+    cmds:
+      - task: delete-deployment
+        vars: {D: "nginx", N: "iona"}
+
   delete-deployment:
     desc: task delete-deployment D=envoy-lb
     vars:
-      D: ""
-      N: "{{.CLUSTER_NAMESPACE}}"
+      D: '{{.D}}'
+      N: '{{default .CLUSTER_NAMESPACE .N}}'
     cmds:
       - |
         [ -z "{{.D}}" ] && echo "D not set" && exit -1

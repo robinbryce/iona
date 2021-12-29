@@ -41,7 +41,16 @@ resource "kubernetes_deployment_v1" "traefik" {
         volume {
           name = "acme-certs"
         }
-
+        volume {
+          name = "traefik-dynamic-config"
+          config_map {
+            name = "traefik-dynamic-config"
+            items {
+              key  = "iona-traefik-routes.yaml"
+              path = "iona-traefik-routes.yaml"
+            }
+          }
+        }
         container {
           image = "traefik:2.5"
           name = "traefik"
@@ -49,6 +58,16 @@ resource "kubernetes_deployment_v1" "traefik" {
               mount_path = "/var/run/acme"
               name = "acme-certs"
           }
+          volume_mount {
+              mount_path = "/etc/traefik/dynamic/iona-traefik-routes.yaml"
+              name = "traefik-dynamic-config"
+              sub_path = "iona-traefik-routes.yaml"
+          }
+          # volume_mount {
+          #     mount_path = "/etc/traefik/dynamic/iona-traefik-certresolvers.yaml"
+          #     name = "traefik-dynamic-config"
+          #     sub_path = "iona-traefik-certresolvers.yaml"
+          # }
 
           env {
             name = "ACME_EMAIL"
@@ -79,7 +98,7 @@ resource "kubernetes_deployment_v1" "traefik" {
               --ping.entrypoint=ping \
               --log.level=DEBUG \
               --accesslog=true \
-              --providers.kubernetescrd \
+              --providers.file.directory=/etc/traefik/dynamic \
               --certificatesresolvers.letsencrypt.acme.dnschallenge=true \
               --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud \
               --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory \
