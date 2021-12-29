@@ -1,7 +1,7 @@
 resource "kubernetes_service_v1" "traefik" {
   metadata {
     name = "traefik-web"
-    namespace = "${local.cluster_namespace}"
+    namespace = "${local.gcp_project_name}"
   }
   spec {
     cluster_ip = "None"
