@@ -20,9 +20,12 @@ resource "kubernetes_manifest" "ingressroutes" {
         storage = true
         schema = {
           openAPIV3Schema = {
-            "x-kubernetes-preserve-unknown-fields" = true
             type = "object"
             properties = {
+              spec = {
+                type = "object"
+                "x-kubernetes-preserve-unknown-fields" = true
+              }
               data = {
                 type = "string"
               }
