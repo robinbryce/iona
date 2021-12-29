@@ -52,12 +52,12 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
             name = "envoy-conf"
           }
           port {
-            container_port = 80
+            container_port = 8080
             protocol = "TCP"
             name = "web"
           }
           port {
-            container_port = 443
+            container_port = 8443
             protocol = "TCP"
             name = "websecure"
           }
@@ -77,7 +77,7 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
           liveness_probe {
             failure_threshold = 3
             tcp_socket {
-              port = 443
+              port = 8443
             }
             initial_delay_seconds = 10
             period_seconds = 10
@@ -87,7 +87,7 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
           readiness_probe {
             failure_threshold = 3
             tcp_socket {
-              port = 443
+              port = 8443
             }
             period_seconds = 10
             success_threshold = 1
