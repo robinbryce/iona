@@ -15,10 +15,10 @@ resource "kubernetes_manifest" "iona-nginx-route" {
       }]
       tls = {
         cert_resolver = "letsencrypt"
-        domains = [{
-          main = "*.thaumagen.io",
-          sans = "*.thaumagen.io"
-        }]
+        # domains = [{
+        #   main = "*.thaumagen.io",
+        #   sans = "*.thaumagen.io"
+        # }]
       }
     }
   }
