@@ -8,6 +8,12 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
   }
   spec {
     replicas = 1
+    selector {
+      match_labels = {
+        "app" = "envoy-lb"
+      }
+    }
+
     strategy {
       # The taints don't allow > 1 pod to run, so rolling update can't work.
       type = "Recreate"
