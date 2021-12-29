@@ -24,10 +24,10 @@ overload_manager:
 admin:
   # access_log_path: "/var/log/envoy_admin.log"
   access_log_path: "/dev/stdout"
-  # address:
-  #   socket_address:
-  #     address: 127.0.0.1
-  #     port_value: 9090
+  address:
+    socket_address:
+      address: 127.0.0.1
+      port_value: 9090
 static_resources:
   listeners:
   - address:
