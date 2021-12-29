@@ -44,7 +44,7 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
           name = "nginx"
           volume_mount {
               mount_path = "/etc/nginx"
-              name = "iona-nginx"
+              name = "iona-nginx-conf"
           }
           volume_mount {
               mount_path = "/etc/nginx/html/static"
