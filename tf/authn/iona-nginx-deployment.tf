@@ -26,6 +26,16 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
         node_selector = {
           "cloud.google.com/gke-nodepool" = "work-pool"
         }
+        # node_selector = {
+        #   "cloud.google.com/gke-nodepool" = "ingress-pool"
+        # }
+        # toleration {
+        #   effect = "NoExecute"
+        #   key = "ingress-pool"
+        #   operator = "Equal"
+        #   value = true
+        # }
+
         volume {
           name = "iona-nginx-conf"
           config_map {

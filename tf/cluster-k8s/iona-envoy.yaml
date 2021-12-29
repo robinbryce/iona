@@ -69,7 +69,7 @@ static_resources:
           - endpoint:
               address:
                 socket_address:
-                  address: traefik-web.traefik
+                  address: traefik-web.iona
                   port_value: 443
   - name: traefik-web|80
     connect_timeout: 15s
@@ -86,7 +86,7 @@ static_resources:
           - endpoint:
               address:
                 socket_address:
-                  address: traefik-web.traefik
+                  address: traefik-web.iona
                   port_value: 80
 
 layered_runtime:
