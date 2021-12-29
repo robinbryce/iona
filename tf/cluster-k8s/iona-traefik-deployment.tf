@@ -78,6 +78,7 @@ resource "kubernetes_deployment_v1" "traefik" {
               --entrypoints.ping.address=:10254 \
               --ping.entrypoint=ping \
               --log.level=DEBUG \
+              --accesslog=true \
               --providers.kubernetescrd \
               --certificatesresolvers.letsencrypt.acme.dnschallenge=true \
               --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud \
