@@ -30,7 +30,7 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
           name = "iona-nginx-conf"
           config_map {
             name = "iona-nginx"
-            item {
+            items {
               key = "nginx.conf"
               path = "nginx.conf"
             }
@@ -49,7 +49,7 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
           volume_mount {
               mount_path = "/etc/nginx/nginx.conf"
               name = "iona-nginx-conf"
-              subpath = "nginx.conf"
+              sub_path = "nginx.conf"
           }
           volume_mount {
               mount_path = "/etc/nginx/html/static"
