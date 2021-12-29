@@ -59,14 +59,16 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
           port {
             container_port = 443
             protocol = "TCP"
-            # name = "websecure"
-            name = "envoy-admin"
+            name = "websecure"
           }
-          port {
-            container_port = 9090
-            protocol = "TCP"
-            name = "admin"
-          }
+          # kubernetes/terraform provider is having trouble with this. it might
+          # not be specific to terraforms kubernetes provider - we are listening on the
+          # host network (the single vm in the ingress-pool)
+          # port {
+          #   container_port = 9090
+          #   protocol = "TCP"
+          #   name = "admin"
+          # }
           args = [
             "--config-path /etc/envoy/envoy.yaml",
             "--component-log-level upstream:debug,connection:trace"
