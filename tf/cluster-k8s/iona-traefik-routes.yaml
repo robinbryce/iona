@@ -1,8 +1,9 @@
 http:
   middlewares:
-    add-thaumagen-github-io-prefix:
+    add-iona-prefix:
       addPrefix:
         prefix: "/iona"
+
   services:
     nginx:
       loadBalancer:
@@ -13,11 +14,13 @@ http:
       loadBalancer:
         servers:
           - url: https://thaumagen.github.io
+
   routers:
     iona-authn:
       rule: Host(`iona.thaumagen.io`) && PathPrefix(`/authn`)
       middlewares:
-        - add-thaumagen-github-io-prefix
+        - add-iona-prefix
+      service: thaumagen-github-io
     iona-thaumagen-io-tls:
       entryPoints:
         - web
