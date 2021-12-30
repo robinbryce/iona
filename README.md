@@ -26,37 +26,12 @@ Note: Diagrams in this document render using [Markdown Preview Enhanced](https:/
 - traefik for dns01 letsencrypt tls certificate provisioning
 
 ```puml
-@startuml
-!include <kubernetes/k8s-sprites-unlabeled-25pct>
-skinparam handwritten true 
-
-frame "iona" {
-component "<$ing>\nstatic ip" as staticip
-
-component "ingress-node-pool" {
-  cloud "ingress-node" as ingressnode 
-  component "<$svc>\nenvoy-lb" as envoylb
-  ingressnode -> envoylb
-}
-
-staticip ..> ingressnode
-
-component "work-node-pool" {
-  component "<$svc>\niona-traefik" as ionatraefik 
-  component "<$svc>\niona-nginx" as ionanginx
-  ionatraefik -> ionanginx
-}
-
-envoylb -> ionatraefik
-
-}
-
-cloud "letsencrypt" as lestencrypt
-ionatraefik ..> lestencrypt
-@enduml
 ```
 
 ![Iona Resources](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/robinbryce/iona/main/iona-wbs.iuml)
+
+
+![Iona Components](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/robinbryce/iona/main/iona-components.iuml)
 
 # Plan
 
