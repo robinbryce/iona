@@ -1,0 +1,28 @@
+@startuml
+!include <kubernetes/k8s-sprites-unlabeled-25pct>
+skinparam handwritten true 
+
+frame "iona" {
+component "<$ing>\nstatic ip" as staticip
+
+component "ingress-node-pool" {
+  cloud "ingress-node" as ingressnode 
+  component "<$svc>\nenvoy-lb" as envoylb
+  ingressnode -> envoylb
+}
+
+staticip ..> ingressnode
+
+component "work-node-pool" {
+  component "<$svc>\niona-traefik" as ionatraefik 
+  component "<$svc>\niona-nginx" as ionanginx
+  ionatraefik -> ionanginx
+}
+
+envoylb -> ionatraefik
+
+}
+
+cloud "letsencrypt" as lestencrypt
+ionatraefik ..> lestencrypt
+@enduml
