@@ -1,4 +1,5 @@
 @startwbs
+skinparam handwritten true
 * iona
 ** iona-cluster
 *** static-ip
