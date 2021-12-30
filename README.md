@@ -20,18 +20,17 @@ Note: Diagrams in this document render using [Markdown Preview Enhanced](https:/
 
 # Cluster Overview
 
-- logging and monitoring enabled
-- n2-standard-4 nodes
-- NO EXTERNAL LOAD BALANCER. Envoy + Traefic based ingress. The ingress pool is limited to a single node and kubeip assigns our static ip to it.
-- traefik for dns01 letsencrypt tls certificate provisioning
-
-```puml
-```
-
 ![Iona Resources](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/robinbryce/iona/main/iona-wbs.iuml)
 
 
 ![Iona Components](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/robinbryce/iona/main/iona-components.iuml)
+
+- Cluster deployed and managed using terraform cloud via github
+- logging and monitoring enabled
+- n2-standard-4 nodes
+- NO LOAD BALANCER (reduces idle cost by ~50%). Envoy + Traefic based ingress. Achieve using a node pool specifically for ingress which is limited to a single vm. kubeip assigns the static ip to it.
+- traefik for dns01 letsencrypt tls certificate provisioning
+- The kubernetes resources for the above are considered part of the cluster and so are deployed and managed using the terraform kubernetes provider
 
 # Plan
 
