@@ -17,11 +17,11 @@ http:
 
   routers:
     iona-authn:
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/authn`)
+      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/iona/authn`)
       entryPoints:
         - websecure
-      middlewares:
-        - add-iona-prefix
+      # middlewares:
+      #   - add-iona-prefix
       service: thaumagen-github-io
       tls:
         certResolver: letsencrypt
