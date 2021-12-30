@@ -2,6 +2,13 @@
 
 Named after [Iona](https://en.ikipedia.org/wiki/Wikipedia:WikiProject_Scottish_Islands/Islands_by_population_densityw) is a scottish island with a population of ~120
 
+* [Project Page](https://github.com/users/robinbryce/projects/2)
+* [GCP Console](https://console.cloud.google.com/home/dashboard?project=iona-1)
+* [Terraform Cloud Workspaces](https://app.terraform.io/app/robinbryce/workspaces)
+* [cluster landing page](https://iona.thaumagen.io/static/index.html)
+
+Note: Diagrams in this document render using [Markdown Preview Enhanced](https://shd101wyy.github.io/markdown-preview-enhanced/#/) - which requires some kind of java installed. `apt-get install default-jre`
+
 # Warts
 
 * terraforms kubernetes provider doesn't seem smart enough to remove
@@ -11,25 +18,49 @@ Named after [Iona](https://en.ikipedia.org/wiki/Wikipedia:WikiProject_Scottish_I
 * terraform kubnernetes provider waits forever if a deployment doesn't come
   ready due to errors and needs to be force canceled
 
-# Cluster features
+# Cluster Overview
 
 - logging and monitoring enabled
 - n2-standard-4 nodes
-- static-ip assigned to single instance in ingress-pool and ingress via envoy
+- NO EXTERNAL LOAD BALANCER. Envoy + Traefic based ingress. The ingress pool is limited to a single node and kubeip assigns our static ip to it.
 - traefik for dns01 letsencrypt tls certificate provisioning
+
+```puml
+@startuml
+!include <kubernetes/k8s-sprites-unlabeled-25pct>
+skinparam handwritten true 
+
+frame "iona" {
+component "<$ing>\nstatic ip" as staticip
+
+component "ingress-node-pool" {
+  cloud "ingress-node" as ingressnode 
+  component "<$svc>\nenvoy-lb" as envoylb
+  ingressnode -> envoylb
+}
+
+staticip ..> ingressnode
+
+component "work-node-pool" {
+  component "<$svc>\niona-traefik" as ionatraefik 
+  component "<$svc>\niona-nginx" as ionanginx
+  ionatraefik -> ionanginx
+}
+
+envoylb -> ionatraefik
+
+}
+
+cloud "letsencrypt" as lestencrypt
+ionatraefik ..> lestencrypt
+@enduml
+```
+
+![Iona Resources](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/robinbryce/iona/main/iona-wbs.iuml)
 
 # Plan
 
-* [/] create the cluster
-* [/] enable monitoring and logging
-* [/] configure static ip assignment for ingress pool
-* [ ] configure envoy as ingress proxy
-* [ ] congigure traefik for tls cert challenges dns01
-* [ ] investigate certmanager via terraform
-* [x] use no-ip dynamic-dns for dns
-* [x] enable letsencrypt with no-ip domain [see](https://hometechhacker.com/letsencrypt-certificate-dns-verification-noip/)
-* [?] update cluster to use node ports for external access
-
+* [Project Page](https://github.com/users/robinbryce/projects/2)
 # Future improvements
 
 * [ ] investigate kubestack for working with terraform & kustomize together.

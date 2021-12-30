@@ -1,0 +1,18 @@
+@startwbs
+!theme sketchy-outline
+* iona
+** iona-cluster
+*** static-ip
+*** router
+*** cloud-nat
+*** firewall-rule-ingress-80,443
+*** ingress-node-pool
+*** work-node-pool
+*** kubeip-iam-role
+** iona-cluster-k8s
+*** dns01solver service account
+*** kubeip service account
+*** kubeip cluster role
+*** envoy-lb
+*** iona traefik (with letsencrypt tls certs)
+@endwbs
