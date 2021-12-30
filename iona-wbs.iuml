@@ -1,5 +1,4 @@
 @startwbs
-!theme sketchy-outline
 * iona
 ** iona-cluster
 *** static-ip
