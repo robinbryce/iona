@@ -9,7 +9,7 @@ http:
       entryPoints:
         - web
         - websecure
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/static`)
+      rule: Host(`iona.thaumagen.io`) && ( PathPrefix(`/static`) || PathPrefix(`/authn`) )
       service: nginx
       tls:
         certResolver: letsencrypt
