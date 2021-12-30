@@ -29,6 +29,32 @@ http:
         domains:
           - main: "thaumagen.io"
             sans: "*.thaumagen.io"
+    iona-thaumagen:
+      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/thaumagen`)
+      entryPoints:
+        - websecure
+      middlewares:
+        - add-iona-prefix
+      service: thaumagen-github-io
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "thaumagen.io"
+            sans: "*.thaumagen.io"
+
+    iona-public:
+      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/public`)
+      entryPoints:
+        - websecure
+      middlewares:
+        - add-iona-prefix
+      service: thaumagen-github-io
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "thaumagen.io"
+            sans: "*.thaumagen.io"
+
     iona-thaumagen-io-tls:
       entryPoints:
         - web
