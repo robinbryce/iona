@@ -13,7 +13,7 @@ http:
     thaumagen-github-io:
       loadBalancer:
         servers:
-          - url: https://thaumagen.github.io
+          - url: https://thaumagen.github.io/
 
   routers:
     iona-authn:
