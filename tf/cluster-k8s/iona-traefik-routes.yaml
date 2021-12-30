@@ -12,6 +12,7 @@ http:
 
     thaumagen-github-io:
       loadBalancer:
+        passHostHeader: false
         servers:
           - url: https://thaumagen.github.io/
 
