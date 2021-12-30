@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/x.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/x.x.x/firebase-auth.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/x.x.x/firebaseui.js"></script>
+    <link rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/x.x.x/firebaseui.css" />
+  </head>
+  <body>
+    <div id="tenant-selection-buttons">
+      <button id="tenant-thaumagen-select-button"
+        data-val="thaumagen-h92cb">Thaumagen</button>
+      <button id="tenant-public-select-button" data-val="public-69cvf">Public</button>
+    </div>
+    <div id="firebaseui-auth-container"></div>
+    <script>
+      var uiConfigs = {
+      'THAUMAGEN_ID1': {
+        'signInOptions': [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+        'credentialHelper': 'none',
+        'signInFlow': 'popup',
+        'callbacks': {
+          'signInSuccessWithAuthResult': function(authResult, redirectUrl) {
+            // The sign in success callback.
+            return false;
+           }
+        },
+        // tosUrl and privacyPolicyUrl accept either url string or a callback
+        // function.
+        // Terms of service url/callback.
+        tosUrl: '[https://iona.thaumagen.io/static/terms.html]',
+        // Privacy policy url/callback.
+        privacyPolicyUrl: function() {
+          window.location.assign('[https://iona.thaumagen.io/static/index.html]');
+        }
+      },
+      'PUBLIC_ID2': {
+        'signInOptions': [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+        'credentialHelper': 'none',
+        'signInFlow': 'popup',
+        'callbacks': {
+          'signInSuccessWithAuthResult': function(authResult, redirectUrl) {
+            // The sign in success callback.
+            return false;
+           }
+        },
+        // tosUrl and privacyPolicyUrl accept either url string or a callback
+        // function.
+        // Terms of service url/callback.
+        tosUrl: '[https://iona.thaumagen.io/static/terms.html]',
+        // Privacy policy url/callback.
+        privacyPolicyUrl: function() {
+          window.location.assign('[https://iona.thaumagen.io/static/index.html]');
+        }
+      }
+    };
+    </script>
+    <script>
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      tenantSelectionButton.addEventListener('click', (e) => {
+      var tenantId = e.target.getAttribute('data-val');
+      firebase.auth().tenantId = tenantId;
+      ui.reset();
+      ui.start('#firebaseui-auth-container', uiConfigs[tenantId]);
+      });
+    </script>
+
+  </body>
+</html>

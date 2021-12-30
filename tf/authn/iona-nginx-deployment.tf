@@ -26,15 +26,6 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
         node_selector = {
           "cloud.google.com/gke-nodepool" = "work-pool"
         }
-        # node_selector = {
-        #   "cloud.google.com/gke-nodepool" = "ingress-pool"
-        # }
-        # toleration {
-        #   effect = "NoExecute"
-        #   key = "ingress-pool"
-        #   operator = "Equal"
-        #   value = true
-        # }
 
         volume {
           name = "iona-nginx-conf"
@@ -52,6 +43,12 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
             name = "iona-static-pages"
           }
         }
+        volume {
+          name = "iona-authn-pages"
+          config_map {
+            name = "iona-authn-pages"
+          }
+        }
 
         container {
           image = "nginx:1.21"
@@ -64,6 +61,10 @@ resource "kubernetes_deployment_v1" "iona-nginx" {
           volume_mount {
               mount_path = "/etc/nginx/html/static"
               name = "iona-static-pages"
+          }
+          volume_mount {
+              mount_path = "/etc/nginx/html/authn"
+              name = "iona-authn-pages"
           }
           port {
             container_port = 80
