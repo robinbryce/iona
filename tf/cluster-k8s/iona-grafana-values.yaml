@@ -1,1 +1,2 @@
-# empty
+nodeSelector:
+  "cloud.google.com/gke-nodepool": "work-pool"

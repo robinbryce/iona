@@ -25,11 +25,7 @@ resource "helm_release" "grafana" {
     value = "grafana-sa"
   }
 
-  set {
-    name = "nodeSelector"
-    # "cloud.google.com/gke-nodepool" = "work-pool"
-    value = "work-pool"
-  }
+  # nodeSelector set in values.yaml (read above)
 }
 
 resource "kubernetes_service_account_v1" "grafana" {
