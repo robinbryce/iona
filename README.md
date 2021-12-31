@@ -3,9 +3,11 @@
 Named after [Iona](https://en.ikipedia.org/wiki/Wikipedia:WikiProject_Scottish_Islands/Islands_by_population_densityw) is a scottish island with a population of ~120
 
 * [Project Page](https://github.com/users/robinbryce/projects/2)
+* [Firebase Project Page](https://console.firebase.google.com/project/iona-1/settings/general)
 * [GCP Console](https://console.cloud.google.com/home/dashboard?project=iona-1)
 * [Terraform Cloud Workspaces](https://app.terraform.io/app/robinbryce/workspaces)
-* [cluster landing page](https://iona.thaumagen.io/static/index.html)
+* [thaumagen domain registrar](https://panel.bytemark.co.uk/domains/thaumagen.com/dns)
+* [cluster landing page](https://iona.thaumagen.io/thaumagen/index.html)
 
 Note: Diagrams in this document render using [Markdown Preview Enhanced](https://shd101wyy.github.io/markdown-preview-enhanced/#/) - which requires some kind of java installed. `apt-get install default-jre`
 
@@ -101,6 +103,8 @@ project before the tf can be applied.
       Settings/Security/Allow tenants
 * [ ] add the oauth domain
       Settings/Security/ add domain
+
+Can users be managed via tf ?
 
 ## Create Client ID & Secret for each tenant
 

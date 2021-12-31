@@ -30,10 +30,9 @@ tasks:
       - |
         POD=$({{.KUBECTL}} -n {{.N}} get pod \
           --selector=app.kubernetes.io/name=traefik-web \
-          --field-selector=status.phase=Running \
           --no-headers -o custom-columns=":metadata.name")
         echo $POD
-        {{.KUBECTL}} -n {{.N}} port-forward --address localhost pod/$POD 8080 8080
+        {{.KUBECTL}} -n {{.N}} port-forward --address localhost pod/$POD 8080
   iona-del-envoy-lb:
     desc: delete the envoy-lb deployment after a force canceled tf apply
     cmds:
