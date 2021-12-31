@@ -33,7 +33,7 @@ resource "kubernetes_service_account_v1" "grafana" {
     name = "grafana-sa"
     namespace = "${local.monitoring_namespace}"
     annotations = {
-      "iam.gke.io/gcp-service-account" = "kubeip-sa@${local.gcp_project_id}.iam.gserviceaccount.com"
+      "iam.gke.io/gcp-service-account" = "grafana-sa@${local.gcp_project_id}.iam.gserviceaccount.com"
     }
   }
 }
