@@ -1,8 +1,8 @@
 resource "kubernetes_namespace_v1" "monitoring" {
   metadata {
-    name = "${local.gcp_project_name}"
+    name = "monitoring"
     labels = {
-      name = "${local.gcp_project_name}"
+      name = "monitoring"
     }
   }
 }
