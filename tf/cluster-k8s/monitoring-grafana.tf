@@ -1,32 +1,32 @@
-# resource "helm_release" "grafana" {
-#   name = "grafana"
-#   chart = "grafana"
-#   version = "6.20.3"
-#   repository = "https://grafana.github.io/helm-charts"
-# 
-#   values = [
-#     "${file("iona-grafana-values.yaml")}"
-#   ]
-#   set {
-#     name = "rbac.create"
-#     value = "false"
-#   }
-#   set {
-#     name = "rbac.useExistingRole"
-#     value = "grafana-sa"
-#   }
-# 
-#   set {
-#     name = "serviceAccount.create"
-#     value = "false"
-#   }
-#   set {
-#     name = "serviceAccount.name"
-#     value = "grafana-sa"
-#   }
-# 
-#   # nodeSelector set in values.yaml (read above)
-# }
+resource "helm_release" "grafana" {
+  name = "grafana"
+  chart = "grafana"
+  version = "6.20.3"
+  repository = "https://grafana.github.io/helm-charts"
+
+  values = [
+    "${file("monitoring-grafana-values.yaml")}"
+  ]
+  set {
+    name = "rbac.create"
+    value = "false"
+  }
+  set {
+    name = "rbac.useExistingRole"
+    value = "${kubernetes_service_account_v1.grafana.name}"
+  }
+
+  set {
+    name = "serviceAccount.create"
+    value = "false"
+  }
+  set {
+    name = "serviceAccount.name"
+    value = "${kubernetes_service_account_v1.grafana.name}"
+  }
+
+  # nodeSelector set in values.yaml (read above)
+}
 
 resource "kubernetes_service_account_v1" "grafana" {
   metadata {
