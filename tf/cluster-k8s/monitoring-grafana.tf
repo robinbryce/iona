@@ -18,6 +18,11 @@ resource "helm_release" "grafana" {
   # }
 
   set {
+    name = "adminPassword"
+    value = "${var.grafana_admin_password}"
+  }
+
+  set {
     name = "serviceAccount.create"
     value = "false"
   }

@@ -10,6 +10,10 @@ variable "cluster_name" {
 }
 output "cluster_name" { value = var.cluster_name }
 
+variable "grafana_admin_password" {
+  type = string
+}
+
 locals {
   # All remote state references are via variables with short cuts in the
   # locals.
