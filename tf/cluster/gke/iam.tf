@@ -70,3 +70,11 @@ resource "google_project_iam_member" "iam_member_kluster" {
   member     = "serviceAccount:kluster-serviceaccount@${var.project}.iam.gserviceaccount.com"
   depends_on = [google_service_account.kluster]
 }
+
+resource "google_project_iam_member" "iam_member_kluster_monitoring" {
+
+  role       = "roles/monitoring.metricWriter"
+  project    = var.project
+  member     = "serviceAccount:kluster-serviceaccount@${var.project}.iam.gserviceaccount.com"
+  depends_on = [google_service_account.kluster]
+}
