@@ -13,7 +13,7 @@ resource "helm_release" "grafana" {
   }
   set {
     name = "rbac.useExistingRole"
-    value = "${kubernetes_service_account_v1.grafana.metadata.name}"
+    value = "${kubernetes_service_account_v1.grafana.metadata[0].name}"
   }
 
   set {
@@ -22,7 +22,7 @@ resource "helm_release" "grafana" {
   }
   set {
     name = "serviceAccount.name"
-    value = "${kubernetes_service_account_v1.grafana.metadata.name}"
+    value = "${kubernetes_service_account_v1.grafana.metadata[0].name}"
   }
 
   # nodeSelector set in values.yaml (read above)
@@ -30,10 +30,10 @@ resource "helm_release" "grafana" {
 
 resource "kubernetes_service_account_v1" "grafana" {
   metadata {
-    name = "grafana-sa"
+    name = "${google_service_account.grafana.account_id}"
     namespace = "${local.monitoring_namespace}"
     annotations = {
-      "iam.gke.io/gcp-service-account" = "grafana-sa@${local.gcp_project_id}.iam.gserviceaccount.com"
+      "iam.gke.io/gcp-service-account" = "${google_service_account.grafana.account_id}@${local.gcp_project_id}.iam.gserviceaccount.com"
     }
   }
 }
