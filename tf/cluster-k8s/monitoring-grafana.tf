@@ -13,7 +13,7 @@ resource "helm_release" "grafana" {
   }
   set {
     name = "rbac.useExistingRole"
-    value = "${kubernetes_service_account_v1.grafana.name}"
+    value = "${kubernetes_service_account_v1.grafana.metadata.name}"
   }
 
   set {
@@ -22,7 +22,7 @@ resource "helm_release" "grafana" {
   }
   set {
     name = "serviceAccount.name"
-    value = "${kubernetes_service_account_v1.grafana.name}"
+    value = "${kubernetes_service_account_v1.grafana.metadata.name}"
   }
 
   # nodeSelector set in values.yaml (read above)
