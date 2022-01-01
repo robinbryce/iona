@@ -1,5 +1,6 @@
 resource "helm_release" "grafana" {
   name = "grafana"
+  namespace = "monitoring"
   chart = "grafana"
   version = "6.20.3"
   repository = "https://grafana.github.io/helm-charts"
@@ -7,14 +8,14 @@ resource "helm_release" "grafana" {
   values = [
     "${file("monitoring-grafana-values.yaml")}"
   ]
-  set {
-    name = "rbac.create"
-    value = "false"
-  }
-  set {
-    name = "rbac.useExistingRole"
-    value = "${kubernetes_service_account_v1.grafana.metadata[0].name}"
-  }
+  # set {
+  #   name = "rbac.create"
+  #   value = "false"
+  # }
+  # set {
+  #   name = "rbac.useExistingRole"
+  #   value = "${kubernetes_service_account_v1.grafana.metadata[0].name}"
+  # }
 
   set {
     name = "serviceAccount.create"

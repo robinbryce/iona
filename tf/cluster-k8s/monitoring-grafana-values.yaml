@@ -2,5 +2,9 @@
 # keep these in the same order as in the upsream values
 # use this file for all values that don't benefit from interpolation OR which
 # can not be 'set' in the resource hcl
+#serviceAccount:
+#  create: false
+#  name: grafana-sa
+
 nodeSelector:
   "cloud.google.com/gke-nodepool": "work-pool"
