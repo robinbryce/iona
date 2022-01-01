@@ -42,7 +42,7 @@ resource "google_project_iam_member" "iam_member_grafana" {
   project = local.gcp_project_id
   # https://grafana.com/docs/grafana/latest/datasources/google-cloud-monitoring/
   # role = "projects/${local.gcp_project_id}/roles/monitoring.viewer" #  Monitoring Viewer
-  role = "roles/monitoring.viewer" #  Monitoring Viewer
+  role    = "roles/monitoring.viewer" #  Monitoring Viewer
   member = "serviceAccount:${google_service_account.grafana.email}"
 }
 
@@ -73,5 +73,5 @@ resource "google_service_account" "grafana" {
 resource "google_service_account_iam_member" "grafana" {
   service_account_id = google_service_account.grafana.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "${local.workloadid_fqdn}[${local.workloadid_fqdn}/grafana-sa]"
+  member             = "${local.workloadid_fqdn}[${local.monitoring_namespace}/grafana-sa]"
 }
