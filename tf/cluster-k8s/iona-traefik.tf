@@ -23,8 +23,8 @@ resource "kubernetes_config_map_v1" "traefik-env" {
   }
 
   data = {
-    ACME_EMAIL: "robin.bryce@thaumagen.com"
-    REDIS_ENDPOINT: "${local.redis_memcache_endpoint}"
+    ACME_EMAIL = "robin.bryce@thaumagen.com"
+    REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
   }
 }
 
