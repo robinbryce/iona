@@ -9,7 +9,7 @@ deployment:
   # instance in ingress-pool
   initContainers:
     - name: data-volume-permissions
-      image: busybox: 1.31.1
+      image: "busybox:1.31.1"
       command: ["sh", "-c", "mkdir /data/letsencrypt && chmod -Rv 600 /data/letsencrypt/*"]
       volumeMounts:
         - name: data
@@ -68,6 +68,15 @@ ports:
       domains:
         - main: "thaumagen.io"
           sans: "*.thaumagen.io"
+
+service:
+  type: ClusterIP
+  # type: LoadBalancer - this picks up the kubeip static ip for the ingress
+  # node and GCP creates a target-pool + forwarding rule. If we go this road,
+  # provided we sort out KV store for letsencrypt certs, we can drop the
+  # envoy-lb service all together. We would need to do this bit in HCL to
+  # cleanly inject the static ip address
+  # see https://cloud.google.com/load-balancing/docs/target-pools
 
 persistence:
   # using letsencrypt with persistence assumes we only use a single traefik
