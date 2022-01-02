@@ -69,7 +69,8 @@ additionalArguments:
 #  - "--log.level=DEBUG"
 
 envFrom:
-  - name: traefik-env
+  - configMapRef:
+      name: traefik-env
 
 ports:
   websecure:
