@@ -1,5 +1,7 @@
 resource "google_redis_instance" "memcache" {
   project        = "${local.gcp_project_id}"
+  zone           = "${local.gcp_project_zone}"
+  region         = "${local.gcp_project_region}"
   name           = "memcache"
   memory_size_gb = 1
 }
