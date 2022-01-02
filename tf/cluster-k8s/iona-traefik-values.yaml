@@ -16,18 +16,11 @@ providers:
     # XXX: TODO: I think this is necessary to proxy to github pages for static
     # content
     allowExternalNameServices: true
-
 volumes:
   - name: traefik-default-routes
     type: configMap
-    items:
-      - key: "traefik-default-routes.yaml"
-        path: "traefik-default-routes.yaml"
-
-additionalVolumeMounts:
-  - name: traefik-default-routes
-    mountPath: "/etc/traefik/dynamic/traefik-default-routes.yaml"
-    subPath: "traefik-default-routes.yaml"
+    mountPath: "/etc/traefik/dynamic/default-routes"
+# additionalVolumeMounts
 
 logs:
   general:
@@ -47,7 +40,7 @@ additionalArguments:
   - --ping.entrypoint=ping
   - --log.level=DEBUG
   - --accesslog=true
-  - --providers.file.directory=/etc/traefik/dynamic
+  - --providers.file.directory=/etc/traefik/dynamic/default-routes
   - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
   - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
   - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
