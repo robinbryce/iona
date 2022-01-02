@@ -16,6 +16,9 @@ deployment:
           mountPath: /data
 
 providers:
+  redis:
+    endpoints:
+
   kubernetesCRD:
     # routes can only reference services in their own namespace
     # allowCrossNamespace: false
@@ -52,13 +55,30 @@ additionalArguments:
   #- --entrypoints.ping.address=:10254
   # - --ping.entrypoint=ping
   - --providers.file.directory=/etc/traefik/dynamic/default-routes
+  - --providers.redis=true
+  - --providers.redis.entrypoints=${REDIS_ENDPOINT}
+  # - --providers.redis.tls.ca=${REDIS_SERVER_CA}
+  # - --providers.redis.tls.key=${REDIS_CLIENT_KEY}
+  # - --providers.redis.tls.cert=${REDIS_CLIENT_CERT}
   - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
   - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
   - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-  - --certificatesresolvers.letsencrypt.acme.email=robin.bryce@thaumagen.com
+  - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
   - --certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json
 #  - "--providers.kubernetesingress.ingressclass=traefik-internal"
 #  - "--log.level=DEBUG"
+
+env:
+  - name: ACME_EMAIL
+    valueFrom:
+      configMapRef:
+        name: traefik-env
+        key: ACME_EMAIL
+  - name: REDIS_ENDPOINT
+    valueFrom:
+      configMapRef:
+        name: traefik-env
+        key: REDIS_ENDPOINT
 
 ports:
   websecure:

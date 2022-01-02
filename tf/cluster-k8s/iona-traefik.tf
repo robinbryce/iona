@@ -13,6 +13,21 @@ resource "helm_release" "traefik" {
   # }
 }
 
+resource "kubernetes_config_map_v1" "traefik-env" {
+  metadata {
+    labels = {
+      app = "traefik"
+    }
+    name = "traefik-env"
+    namespace = "${local.gcp_project_name}"
+  }
+
+  data = {
+    ACME_EMAIL: "robin.bryce@thaumagen.com"
+    REDIS_ENDPOINT: "${local.redis_memcache_endpoint}"
+  }
+}
+
 resource "kubernetes_config_map_v1" "traefik-default-routes" {
   metadata {
     name = "traefik-default-routes"
