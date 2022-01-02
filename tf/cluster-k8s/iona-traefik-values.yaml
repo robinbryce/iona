@@ -19,11 +19,10 @@ providers:
 
 volumes:
   - name: traefik-default-routes
-    configMap:
-      name: traefik-default-routes
-      items:
-        - key: "traefik-default-routes.yaml"
-          path: "traefik-default-routes.yaml"
+    type: configMap
+    items:
+      - key: "traefik-default-routes.yaml"
+        path: "traefik-default-routes.yaml"
 
 additionalVolumeMounts:
   - name: traefik-default-routes
