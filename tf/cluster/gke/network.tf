@@ -5,6 +5,23 @@ resource "google_compute_network" "gke-network" {
   auto_create_subnetworks = false
 }
 
+# private service connections are the recomended way for enabling access to
+# memorystore (aka managed redis)
+# https://cloud.google.com/memorystore/docs/redis/creating-managing-instances#creating_a_redis_instance_with_a_shared_vpc_network_in_a_service_project
+resource "google_compute_global_address" "private_ip_alloc" {
+  name          = "private-ip-alloc"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.gke-network.id
+}
+
+resource "google_service_networking_connection" "googleapis" {
+  network                 = google_compute_network.peering_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_alloc.name]
+}
+
 # https://www.terraform.io/docs/providers/google/r/compute_subnetwork.html
 resource "google_compute_subnetwork" "gke-subnet" {
   name          = var.cluster_name
