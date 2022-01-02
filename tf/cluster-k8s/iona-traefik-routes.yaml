@@ -8,7 +8,7 @@ http:
     grafana:
       loadBalancer:
         servers:
-          - url http://grafana.monitoring/
+          - url http://grafana.monitoring:80/
     nginx:
       loadBalancer:
         servers:
