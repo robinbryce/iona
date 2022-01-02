@@ -24,7 +24,7 @@ resource "google_dns_record_set" "a" {
   rrdatas = [local.static_ingress] # remote state from cluster
 }
 
-resource "google_dns_record_set" "subdomains" {
+resource "google_dns_record_set" "cname" {
 
   for_each = toset( ["admin", "grafana" ] )
   project = local.gcp_project_id
