@@ -62,12 +62,6 @@ resource "kubernetes_deployment_v1" "envoy-lb" {
             name = "websecure"
           }
 
-          port {
-            container_port = 4443
-            protocol = "TCP"
-            name = "websecure2"
-          }
-
           # kubernetes/terraform provider is having trouble with this. it might
           # not be specific to terraforms kubernetes provider - we are listening on the
           # host network (the single vm in the ingress-pool)
