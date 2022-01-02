@@ -9,7 +9,7 @@ resource "helm_release" "traefik" {
   ]
   set {
     name = "additionalArguments"
-    value = "--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email}"
+    value = "{--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email}}"
   }
 }
 
