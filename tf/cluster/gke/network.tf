@@ -10,6 +10,7 @@ resource "google_compute_network" "gke-network" {
 # https://cloud.google.com/memorystore/docs/redis/creating-managing-instances#creating_a_redis_instance_with_a_shared_vpc_network_in_a_service_project
 resource "google_compute_global_address" "private_ip_alloc" {
   name          = "private-ip-alloc"
+  project       = var.project
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
