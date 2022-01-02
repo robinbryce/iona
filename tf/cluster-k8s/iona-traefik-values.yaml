@@ -16,6 +16,9 @@ providers:
     # XXX: TODO: I think this is necessary to proxy to github pages for static
     # content
     allowExternalNameServices: true
+  kubernetesingress:
+    enabled: false
+
 volumes:
   - name: traefik-default-routes
     type: configMap
