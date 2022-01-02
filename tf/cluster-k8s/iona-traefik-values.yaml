@@ -7,6 +7,13 @@ deployment:
     "app.kubernetes.io/part-of": "traefik"
   # TODO: strategy: type = "Recreate" so it can run as host network single
   # instance in ingress-pool
+  initContainers:
+    - name: data-volume-permissions
+      image: busybox: 1.31.1
+      command: ["sh", "-c", "mkdir /data/letsencrypt && chmod -Rv 600 /data/letsencrypt/*"]
+      volumeMounts:
+        - name: data
+          mountPath: /data
 
 providers:
   kubernetesCRD:
@@ -64,8 +71,10 @@ ports:
 
 persistence:
   # using letsencrypt with persistence assumes we only use a single traefik
-  # replica. if load gets to high for that to be tenable, certmanager is the
-  # answer: https://cert-manager.io/docs/installation/helm/
+  # replica. if load gets to high for that to be tenable the answer is:
+  # certmanager https://cert-manager.io/docs/installation/helm/
+  # OR KV store backed by memorstore (redis)
+  # Adding memorstore is likely more bangfor buck and its free
   enabled: true
 
 rbac:
