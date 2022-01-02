@@ -68,17 +68,8 @@ additionalArguments:
 #  - "--providers.kubernetesingress.ingressclass=traefik-internal"
 #  - "--log.level=DEBUG"
 
-env:
-  - name: ACME_EMAIL
-    valueFrom:
-      configMapRef:
-        name: traefik-env
-        key: ACME_EMAIL
-  - name: REDIS_ENDPOINT
-    valueFrom:
-      configMapRef:
-        name: traefik-env
-        key: REDIS_ENDPOINT
+envFrom:
+  - name: traefik-env
 
 ports:
   websecure:
