@@ -35,7 +35,7 @@ variable "cluster_name" {
 }
 output "cluster_name" { value = var.cluster_name }
 
-output "vpc_network" { value = module.cluster.google_compute_network.gke-network.id }
+output "vpc_network" { value = module.cluster.vpc_network }
 
 module "cluster" {
 

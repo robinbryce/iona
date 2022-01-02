@@ -5,6 +5,8 @@ resource "google_compute_network" "gke-network" {
   auto_create_subnetworks = false
 }
 
+output "vpc_network" { value = google_compute_network.gke-network.id }
+
 # private service connections are the recomended way for enabling access to
 # memorystore (aka managed redis)
 # https://cloud.google.com/memorystore/docs/redis/creating-managing-instances#creating_a_redis_instance_with_a_shared_vpc_network_in_a_service_project
