@@ -4,7 +4,7 @@ resource "google_redis_instance" "memcache" {
   name               = "memcache"
   memory_size_gb     = 1
   connect_mode       = "PRIVATE_SERVICE_ACCESS"
-  authorized_network = locals.vpc_network
+  authorized_network = local.vpc_network
 }
 
 locals {
