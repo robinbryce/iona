@@ -67,6 +67,7 @@ persistence:
   # replica. if load gets to high for that to be tenable, certmanager is the
   # answer: https://cert-manager.io/docs/installation/helm/
   enabled: true
+  accessMode: "600"
 
 rbac:
   # created independenty in tf
