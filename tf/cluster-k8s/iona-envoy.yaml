@@ -82,7 +82,7 @@ static_resources:
               address:
                 socket_address:
                   address: traefik.iona
-                  port_value: 443
+                  port_value: 8443
 
   - name: traefik-web|443
     connect_timeout: 15s
