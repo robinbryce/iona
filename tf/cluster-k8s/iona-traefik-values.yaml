@@ -43,7 +43,7 @@ additionalArguments:
   #- --entrypoints.web.address=:80
   #- --entrypoints.websecure.address=:443
   #- --entrypoints.ping.address=:10254
-  - --ping.entrypoint=ping
+  # - --ping.entrypoint=ping
   - --providers.file.directory=/etc/traefik/dynamic/default-routes
   - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
   - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
