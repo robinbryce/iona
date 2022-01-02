@@ -5,6 +5,10 @@ http:
         prefix: "/iona"
 
   services:
+    grafana:
+      loadBalancer:
+        servers:
+          - url http://grafana.monitoring/
     nginx:
       loadBalancer:
         servers:
@@ -17,6 +21,15 @@ http:
           - url: https://thaumagen.github.io/
 
   routers:
+    iona-grafana:
+      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/grafana`)
+      service: grafana
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "thaumagen.io"
+            sans: "*.thaumagen.io"
+
     iona-authn:
       rule: Host(`iona.thaumagen.io`) && PathPrefix(`/authn`)
       entryPoints:
@@ -55,7 +68,7 @@ http:
           - main: "thaumagen.io"
             sans: "*.thaumagen.io"
 
-    iona-thaumagen-io-tls:
+    iona-static:
       entryPoints:
         - web
         - websecure
