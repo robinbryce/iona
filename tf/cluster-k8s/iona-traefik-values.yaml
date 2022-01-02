@@ -56,7 +56,7 @@ additionalArguments:
   # - --ping.entrypoint=ping
   - --providers.file.directory=/etc/traefik/dynamic/default-routes
   - --providers.redis=true
-  - --providers.redis.entrypoints=${REDIS_ENDPOINT}
+  - --providers.redis.endpoints=${REDIS_ENDPOINT}
   # - --providers.redis.tls.ca=${REDIS_SERVER_CA}
   # - --providers.redis.tls.key=${REDIS_CLIENT_KEY}
   # - --providers.redis.tls.cert=${REDIS_CLIENT_CERT}
