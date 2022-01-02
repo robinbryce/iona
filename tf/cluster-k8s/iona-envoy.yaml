@@ -33,6 +33,18 @@ static_resources:
   - address:
       socket_address:
         address: 0.0.0.0
+        port_value: 4443
+    filter_chains:
+    - filters:
+      - name: envoy.filters.network.tcp_proxy
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+          stat_prefix: ingress_tcp
+          cluster: traefik|4443
+
+  - address:
+      socket_address:
+        address: 0.0.0.0
         port_value: 443
     filter_chains:
     - filters:
@@ -54,6 +66,24 @@ static_resources:
           cluster: traefik-web|80
 
   clusters:
+  - name: traefik|4443
+    connect_timeout: 15s
+    # strict_dns "And the way the STRICT_DNS service discovery of Envoy
+    # works is that it maintains the IP address of all the A records
+    # returned by the DNS, and it refreshes the set of IPs every couple of
+    # seconds." - https://blog.markvincze.com/how-to-use-envoy-as-a-load-balancer-in-kubernetes/
+    type: strict_dns
+    per_connection_buffer_limit_bytes: 32768 # 32 KiB
+    load_assignment:
+      cluster_name: traefik|4443
+      endpoints:
+        - lb_endpoints:
+          - endpoint:
+              address:
+                socket_address:
+                  address: traefik.iona
+                  port_value: 443
+
   - name: traefik-web|443
     connect_timeout: 15s
     # strict_dns "And the way the STRICT_DNS service discovery of Envoy

@@ -24,9 +24,12 @@ volumes:
 
 logs:
   general:
-    level: INFO
+    level: DEBUG
   access:
     enabled: true
+    fields:
+      headers:
+        defaultmode: keep
 
 # metrics:
 # globalArguments:
@@ -34,12 +37,10 @@ logs:
 ## Use curly braces to pass values: `helm install --set="additionalArguments={--providers.kubernetesingress.ingressclass=traefik-internal,--log.level=DEBUG}"`
 additionalArguments:
   - --api.insecure=true
-  - --entrypoints.web.address=:80
-  - --entrypoints.websecure.address=:443
-  - --entrypoints.ping.address=:10254
+  #- --entrypoints.web.address=:80
+  #- --entrypoints.websecure.address=:443
+  #- --entrypoints.ping.address=:10254
   - --ping.entrypoint=ping
-  - --log.level=DEBUG
-  - --accesslog=true
   - --providers.file.directory=/etc/traefik/dynamic/default-routes
   - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
   - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
