@@ -25,13 +25,11 @@ resource "google_dns_record_set" "a" {
 }
 
 resource "google_dns_record_set" "cname" {
-
-  for_each = toset( ["admin", "grafana" ] )
   project = local.gcp_project_id
-  name = "${each.key}.${local.gcp_project_name}.${google_dns_managed_zone.primary.dns_name}"
+  name = "admin.${local.gcp_project_name}.${google_dns_managed_zone.primary.dns_name}"
   managed_zone = google_dns_managed_zone.primary.name
   type = "CNAME"
-  ttl = 3600
+  ttl = 300
 
   rrdatas = ["${local.gcp_project_id}.${google_dns_managed_zone.primary.dns_name}"]
 }
