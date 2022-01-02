@@ -13,27 +13,11 @@ resource "helm_release" "traefik" {
   # }
   set {
      name = "additionalArguments"
-     value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes,--providers.redis=true,--providers.redis.endpoints=${local.redis_memcache_endpoint},--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}"
-  }
-  # {--api.insecure=true,
-  # --providers.file.directory=/etc/traefik/dynamic/default-routes,
-  # --providers.redis=true,
-  # --providers.redis.endpoints=${local.redis_memcache_endpoint},
-  # --certificatesresolvers.letsencrypt.acme.dnschallenge=true,
-  # --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,
-  # --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,
-  # --certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},
-  # --certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}
-  #- --entrypoints.web.address=:80
-  #- --entrypoints.websecure.address=:443
-  #- --entrypoints.ping.address=:10254
-  # - --ping.entrypoint=ping
-  # - --providers.redis.tls.ca=${REDIS_SERVER_CA}
-  # - --providers.redis.tls.key=${REDIS_CLIENT_KEY}
-  # - --providers.redis.tls.cert=${REDIS_CLIENT_CERT}
-  #  - "--providers.kubernetesingress.ingressclass=traefik-internal"
-  #  - "--log.level=DEBUG"
+     # value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes,--providers.redis=true,--providers.redis.endpoints=${local.redis_memcache_endpoint},--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}"
 
+     value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}"
+
+  }
 }
 
 resource "kubernetes_config_map_v1" "traefik-env" {
@@ -47,7 +31,7 @@ resource "kubernetes_config_map_v1" "traefik-env" {
 
   data = {
     ACME_EMAIL = "${var.traefik_acme_email}"
-    REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
+    # REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
   }
 }
 
