@@ -24,12 +24,12 @@ resource "google_dns_record_set" "a" {
   rrdatas = [local.static_ingress] # remote state from cluster
 }
 
-resource "google_dns_record_set" "cname" {
-  project = local.gcp_project_id
-  name = "admin.${local.gcp_project_name}.${google_dns_managed_zone.primary.dns_name}"
-  managed_zone = google_dns_managed_zone.primary.name
-  type = "CNAME"
-  ttl = 300
-
-  rrdatas = ["${local.gcp_project_id}.${google_dns_managed_zone.primary.dns_name}"]
-}
+# resource "google_dns_record_set" "cname" {
+#   project = local.gcp_project_id
+#   name = "admin.${local.gcp_project_name}.${google_dns_managed_zone.primary.dns_name}"
+#   managed_zone = google_dns_managed_zone.primary.name
+#   type = "CNAME"
+#   ttl = 300
+# 
+#   rrdatas = ["${local.gcp_project_id}.${google_dns_managed_zone.primary.dns_name}"]
+# }
