@@ -1,9 +1,10 @@
 resource "google_redis_instance" "memcache" {
-  project        = "${local.gcp_project_id}"
-  region         = "${local.gcp_project_region}"
-  name           = "memcache"
-  memory_size_gb = 1
-   connect_mode   = "PRIVATE_SERVICE_ACCESS"
+  project            = "${local.gcp_project_id}"
+  region             = "${local.gcp_project_region}"
+  name               = "memcache"
+  memory_size_gb     = 1
+  connect_mode       = "PRIVATE_SERVICE_ACCESS"
+  authorized_network = locals.vpc_network
 }
 
 locals {
