@@ -7,16 +7,9 @@ resource "helm_release" "traefik" {
   values = [
     "${file("iona-traefik-values.yaml")}"
   ]
-  # set {
-  #   name = "additionalArguments"
-  #   value = "{--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email}}"
-  # }
   set {
      name = "additionalArguments"
-     # value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes,--providers.redis=true,--providers.redis.endpoints=${local.redis_memcache_endpoint},--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}"
-
-     value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}"
-
+     value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes,--providers.redis=true,--providers.redis.endpoints=${local.redis_memcache_endpoint},--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json}"
   }
 }
 
@@ -31,7 +24,7 @@ resource "kubernetes_config_map_v1" "traefik-env" {
 
   data = {
     ACME_EMAIL = "${var.traefik_acme_email}"
-    # REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
+    REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
   }
 }
 
