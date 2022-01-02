@@ -49,7 +49,7 @@ additionalArguments:
   - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
   - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
   - --certificatesresolvers.letsencrypt.acme.email=robin.bryce@thaumagen.com
-  - --certificatesresolvers.letsencrypt.acme.storage=/data/acme-staging.json
+  - --certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json
 #  - "--providers.kubernetesingress.ingressclass=traefik-internal"
 #  - "--log.level=DEBUG"
 
