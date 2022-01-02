@@ -22,7 +22,7 @@ http:
 
   routers:
     iona-grafana:
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/grafana`)
+      rule: Host(`grafana.iona.thaumagen.io`)
       service: grafana
       tls:
         certResolver: letsencrypt
