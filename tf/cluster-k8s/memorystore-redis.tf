@@ -6,5 +6,5 @@ resource "google_redis_instance" "memcache" {
 }
 
 locals {
-  redis_memcache_endpoint = "${google_redis_instance.memcache.host}${google_redis_instance.memcache.port}"
+  redis_memcache_endpoint = "${google_redis_instance.memcache.host}:${google_redis_instance.memcache.port}"
 }

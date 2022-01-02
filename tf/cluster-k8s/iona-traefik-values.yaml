@@ -48,25 +48,25 @@ logs:
 # globalArguments:
 # All available options available on https://docs.traefik.io/reference/static-configuration/cli/
 ## Use curly braces to pass values: `helm install --set="additionalArguments={--providers.kubernetesingress.ingressclass=traefik-internal,--log.level=DEBUG}"`
-additionalArguments:
-  - --api.insecure=true
-  #- --entrypoints.web.address=:80
-  #- --entrypoints.websecure.address=:443
-  #- --entrypoints.ping.address=:10254
-  # - --ping.entrypoint=ping
-  - --providers.file.directory=/etc/traefik/dynamic/default-routes
-  - --providers.redis=true
-  - --providers.redis.endpoints=${REDIS_ENDPOINT}
-  # - --providers.redis.tls.ca=${REDIS_SERVER_CA}
-  # - --providers.redis.tls.key=${REDIS_CLIENT_KEY}
-  # - --providers.redis.tls.cert=${REDIS_CLIENT_CERT}
-  - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
-  - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
-  - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-  - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
-  - --certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json
-#  - "--providers.kubernetesingress.ingressclass=traefik-internal"
-#  - "--log.level=DEBUG"
+#additionalArguments:
+#  - --api.insecure=true
+#  #- --entrypoints.web.address=:80
+#  #- --entrypoints.websecure.address=:443
+#  #- --entrypoints.ping.address=:10254
+#  # - --ping.entrypoint=ping
+#  - --providers.file.directory=/etc/traefik/dynamic/default-routes
+#  - --providers.redis=true
+#  - --providers.redis.endpoints=${REDIS_ENDPOINT}
+#  # - --providers.redis.tls.ca=${REDIS_SERVER_CA}
+#  # - --providers.redis.tls.key=${REDIS_CLIENT_KEY}
+#  # - --providers.redis.tls.cert=${REDIS_CLIENT_CERT}
+#  - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
+#  - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
+#  - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+#  - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+#  - --certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json
+##  - "--providers.kubernetesingress.ingressclass=traefik-internal"
+##  - "--log.level=DEBUG"
 
 envFrom:
   - configMapRef:
