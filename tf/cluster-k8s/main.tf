@@ -14,6 +14,10 @@ variable "grafana_admin_password" {
   type = string
 }
 
+variable "traefik_acme_email" {
+  type = string
+}
+
 locals {
   # All remote state references are via variables with short cuts in the
   # locals.

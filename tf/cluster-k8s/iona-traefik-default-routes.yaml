@@ -1,0 +1,37 @@
+http:
+  middlewares:
+    add-iona-prefix:
+      addPrefix:
+        prefix: "/iona"
+
+  services:
+    grafana:
+      loadBalancer:
+        servers:
+          - url: http://grafana.monitoring:80/
+
+    nginx:
+      loadBalancer:
+        servers:
+          - url: http://nginx.iona:80/
+    thaumagen-github-io:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+          - url: https://thaumagen.github.io/
+
+  routers:
+    iona-authn:
+      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/authn`)
+      entryPoints:
+        - websecure
+      middlewares:
+        - add-iona-prefix
+      service: thaumagen-github-io
+    iona-public:
+      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/public`)
+      entryPoints:
+        - websecure
+      middlewares:
+        - add-iona-prefix
+      service: thaumagen-github-io
