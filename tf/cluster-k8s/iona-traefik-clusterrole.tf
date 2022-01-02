@@ -36,7 +36,7 @@ resource "kubernetes_cluster_role" "traefik" {
   rule {
     api_groups = ["networking.k8s.io"]
     resources  = [
-      "ingresses"
+      "ingresses",
       "ingressclasses"
     ]
     verbs      = ["get", "list", "watch"]

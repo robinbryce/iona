@@ -7,10 +7,10 @@ resource "helm_release" "traefik" {
   values = [
     "${file("iona-traefik-values.yaml")}"
   ]
-  set {
-    name = "additionalArguments"
-    value = "{--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email}}"
-  }
+  # set {
+  #   name = "additionalArguments"
+  #   value = "{--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email}}"
+  # }
 }
 
 resource "kubernetes_config_map_v1" "traefik-default-routes" {
