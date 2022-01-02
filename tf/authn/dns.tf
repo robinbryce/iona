@@ -32,5 +32,5 @@ resource "google_dns_record_set" "subdomain" {
   type = "CNAME"
   ttl = 3600
 
-  rrdatas = ["${local.gcp_project_id}.${google_dns_managed_zone.primary.dns_name}"]
+  rrdatas = ["${local.gcp_project_name}.${google_dns_managed_zone.primary.dns_name}"]
 }
