@@ -33,6 +33,13 @@ resource "kubernetes_cluster_role" "traefik" {
     ]
     verbs      = ["get", "list", "watch"]
   }
+  rule {
+    api_groups = ["networking.k8s.io"]
+    resources  = [
+      "ingresses"
+    ]
+    verbs      = ["get", "list", "watch"]
+  }
 }
 
 resource "kubernetes_cluster_role_binding" "traefik" {
