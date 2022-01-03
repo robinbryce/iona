@@ -9,7 +9,7 @@ resource "helm_release" "traefik" {
   ]
   set {
      name = "additionalArguments"
-     # value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes,--providers.redis=true,--providers.redis.endpoints=${local.redis_memcache_endpoint},--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=traefik/acme/account}"
+     value = "{--api.insecure=true,--providers.file.directory=/etc/traefik/dynamic/default-routes,--providers.redis=true,--providers.redis.endpoints=${local.redis_memcache_endpoint},--certificatesresolvers.letsencrypt.acme.dnschallenge=true,--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud,--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory,--certificatesresolvers.letsencrypt.acme.email=${var.traefik_acme_email},--certificatesresolvers.letsencrypt.acme.storage=traefik/acme/account}"
   }
 }
 

@@ -8,6 +8,7 @@ vars:
   KUBECTL: kubectl --context {{.CONTEXT}} --cluster {{.CLUSTER}}
   CLUSTER_NAMESPACE: iona
   MONITORING_NAMESPACE: monitoring
+  BINDIR: ~/.local/bin
 
 tasks:
   default:
@@ -86,3 +87,16 @@ tasks:
       - |
         [ -z "{{.D}}" ] && echo "D not set" && exit -1
         {{.KUBECTL}} -n {{.N}} delete deployment {{.D}}
+
+  bootstrap:
+    desc: install any tooling necessary or useful (or echo information about where to get)
+    cmds:
+      - |
+        echo "Installing cert-manager cmctl utility"
+        echo " ref: https://cert-manager.io/docs/usage/cmctl/"
+        OS=$(go env GOOS); ARCH=$(go env GOARCH); curl -sL -o cmctl.tar.gz https://github.com/jetstack/cert-manager/releases/latest/download/cmctl-$OS-$ARCH.tar.gz
+        tar xzf cmctl.tar.gz
+        # chmod 700 cmdctl
+        mv cmctl {{.BINDIR}}/
+        ls -la {{.BINDIR}}/cmctl
+        which cmctl
