@@ -22,30 +22,6 @@ http:
           - url: https://thaumagen.github.io/
 
   routers:
-    iona-static:
-      entryPoints:
-        - web
-        - websecure
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/static`)
-      service: nginx
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "thaumagen.io"
-            sans: "*.thaumagen.io"
-
-    iona-public:
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/public`)
-      entryPoints:
-        - websecure
-      middlewares:
-        - add-iona-prefix
-      service: thaumagen-github-io
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "thaumagen.io"
-            sans: "*.thaumagen.io"
 
     iona-grafana:
       rule: Host(`grafana.iona.thaumagen.io`)
