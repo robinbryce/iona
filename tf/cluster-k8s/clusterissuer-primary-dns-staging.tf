@@ -7,7 +7,7 @@ resource "kubernetes_manifest" "clusterissuer_letsencrypt_staging_primary_dns" {
     }
     "spec" = {
       "acme" = {
-        "email" = "${local.traefik_acme_email}" # XXX: TODO rename
+        "email" = "${var.traefik_acme_email}" # XXX: TODO rename
         "privateKeySecretRef" = {
           "name" = "letsencrypt-staging-primary-dns-issuer-key"
         }
