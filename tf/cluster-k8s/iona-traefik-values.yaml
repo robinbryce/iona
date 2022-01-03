@@ -90,19 +90,13 @@ service:
   # cleanly inject the static ip address
   # see https://cloud.google.com/load-balancing/docs/target-pools
 
-persistence:
-  # using letsencrypt with persistence assumes we only use a single traefik
-  # replica. if load gets to high for that to be tenable the answer is:
-  # certmanager https://cert-manager.io/docs/installation/helm/
-  # OR KV store backed by memorstore (redis)
-  # Adding memorstore is likely more bangfor buck and its free
-  enabled: true
-
 rbac:
   # created independenty in tf
   enabled: false
 
 serviceAccount:
+  # we currently use cert-manager, but its a useful fallback to have this in
+  # traefik too
   name: "dns01solver-sa"
 
 # Additional serviceAccount annotations (e.g. for oidc authentication)
