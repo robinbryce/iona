@@ -32,31 +32,30 @@ Note: Diagrams in this document render using [Markdown Preview Enhanced](https:/
   static ip to *any* node in that pool
 - ingress: instead of a loadbalancer (which is ~10GBP/month), we run an envoy proxy. the
   pod is configured to use the *host* network and so listens on the static ip
-  assigned to the instance node by kube ip
-- content proxy and tls termination: traefik. letsencrypt is used for automatic
-  TLS certificates using dns01 challenges for the configured domain. traefik is
-  configured with routes proxying for thaumagen.gitgithub.io so that static
-  public content can be served directly from github.io (using GitHub Pages)
+  assigned to the instance node by kube ip. 
+- content proxy and tls termination: traefik.
+- certmanager & letsencrypt provide automatic TLS certificates using dns01 challenges for the configured domain.
+- traefik is configured with routes proxying for thaumagen.gitgithub.io so that static
+  public content can be served directly from github.io (using GitHub Pages) but under the TLS certs of the clusters domains
 
 - Cluster deployed and managed using terraform cloud via github
 - Public static content hosted via github pages & proxied through traefik
 - logging and monitoring enabled
 - n2-standard-4 nodes
-- NO LOAD BALANCER (reduces idle cost by ~50%). Envoy + Traefic based ingress. Achieve using a node pool specifically for ingress which is limited to a single vm. kubeip assigns the static ip to it.
-- The kubernetes resources for the above are considered part of the cluster and so are deployed and managed using the terraform kubernetes provider
+- NO LOAD BALANCER (reduces idle cost by ~50%). Envoy + Traefic based ingress.
+  Achieve using a node pool specifically for ingress which is limited to a single
+  vm. kubeip assigns the static ip to it.
+- BUT HA/safe configuration for traefik so we can turn on a loadbalancer if we have traffic to justify that.
+- The kubernetes resources for deploying traefik, cert-manager and envoy are
+  considered part of the cluster and so are deployed and managed using the
+  terraform kubernetes and helm providers
+- The traefik routing is *not* part of the cluster. All services, middlewares, routes etc are configured using CRDs via kustomization (raw) manifests
 
 # Plan
 
 * [Project Page](https://github.com/users/robinbryce/projects/2)
-# Future improvements
-
-* [ ] investigate kubestack for working with terraform & kustomize together.
-    [see](https://thenewstack.io/a-better-way-to-provision-kubernetes-using-terraform/)
-
-what to set monitoring_service to for google_container_cluster
 
 # Build
-
 # GKE Project checklist
 
 ## Enable API's

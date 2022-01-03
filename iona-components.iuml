@@ -3,7 +3,7 @@
 skinparam handwritten true 
 
 frame "iona" {
-component "<$ing>\nstatic ip" as staticip
+component "<$ing,scale=0.25>\nstatic ip" as staticip
 
 component "ingress-node-pool" {
   cloud "ingress-node" as ingressnode
@@ -15,7 +15,9 @@ staticip ..> ingressnode
 
 component "work-node-pool" {
   component "<$svc>\niona-traefik" as ionatraefik 
-  component "<$svc>\niona-nginx" as ionanginx
+  component "<$svc,scale=0.25>\ncert manager" as  ionacertmanager
+  cloud "<$svc>\nservices" as ionanginx
+  ionacertmanager -> ionatraefik
   ionatraefik -> ionanginx
 }
 

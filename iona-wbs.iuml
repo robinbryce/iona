@@ -14,7 +14,13 @@ skinparam handwritten true
 *** kubeip service account (workload identity)
 *** kubeip cluster role
 *** envoy-lb
-*** iona traefik (with letsencrypt tls certs)
+*** traefik (kubernetes CRD  + redis KV providers)
+*** cert-manager (CRD + dns01)
 *** grafana & grafana service account (workload identity)
 *** grafana cluster role binding (for standard monitoring roles)
+** k8s kustomize
+*** wild cert for *.thaumagen.io
+*** externalName: thaumagen.github.io
+*** traefik routes: iona.thaumagen.io: /static, /public, /authn, /thaumagen
+*** traefik route: grafana.iona.thaumagen.io
 @endwbs
