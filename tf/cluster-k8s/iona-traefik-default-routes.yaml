@@ -1,8 +1,4 @@
 http:
-  middlewares:
-    add-iona-prefix:
-      addPrefix:
-        prefix: "/iona"
 
   services:
     grafana:
@@ -20,43 +16,3 @@ http:
         passHostHeader: false
         servers:
           - url: https://thaumagen.github.io/
-
-  routers:
-
-    iona-grafana:
-      rule: Host(`grafana.iona.thaumagen.io`)
-      entryPoints:
-        - websecure
-      service: grafana
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "thaumagen.io"
-            sans: "*.thaumagen.io"
-
-
-    iona-authn:
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/authn`)
-      entryPoints:
-        - websecure
-      middlewares:
-        - add-iona-prefix
-      service: thaumagen-github-io
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "thaumagen.io"
-            sans: "*.thaumagen.io"
-
-    iona-thaumagen:
-      rule: Host(`iona.thaumagen.io`) && PathPrefix(`/thaumagen`)
-      entryPoints:
-        - websecure
-      middlewares:
-        - add-iona-prefix
-      service: thaumagen-github-io
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "thaumagen.io"
-            sans: "*.thaumagen.io"
