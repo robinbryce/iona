@@ -7,7 +7,7 @@ component "<$ing,scale=0.25>\nstatic ip" as staticip
 
 component "ingress-node-pool" {
   cloud "ingress-node" as ingressnode
-  component "<$svc>\nenvoy-lb" as envoylb
+  component "<$svc,scale=0.25>\nenvoy-lb" as envoylb
   ingressnode -> envoylb
 }
 
@@ -16,9 +16,11 @@ staticip ..> ingressnode
 component "work-node-pool" {
   component "<$svc>\niona-traefik" as ionatraefik
   component "<$svc,scale=0.25>\ncert manager" as  ionacertmanager
+  component "<$svc,scale=0.25>\ngrafana" as grafana
   cloud "<$svc>\nservices" as ionanginx
   ionacertmanager -> ionatraefik
   ionatraefik -> ionanginx
+  ionatraefik -> grafana
 }
 
 envoylb --> ionatraefik
@@ -35,8 +37,10 @@ ionatraefik ..> githubpages
 
 frame "google services" {
   cloud "memorystore (redis)" as redis
+  cloud "cloud monitoring" as gcpmonitoring
 }
 
-privateservicesaccess -> redis
+privateservicesaccess --> redis
+grafana --> gcpmonitoring
 
 @enduml
