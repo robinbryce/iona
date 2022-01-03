@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+  namespace: iona
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grafana.iona.thaumagen.io`)
+      kind: Rule
+      services:
+        - name: grafana
+          kind: Service
+          namespace: monitoring
+          port: 80
+  tls:
+    secretName: wild-thaumagen-io-cert
+

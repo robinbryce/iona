@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wild-thaumagen-io
+  namespace: iona
+spec:
+  commonName: "thaumagen.io"
+  secretName: wild-thaumagen-io-cert
+  dnsNames:
+    - "thaumagen.io"
+    - "*.thaumagen.io"
+  issuerRef:
+    name: letsencrypt-staging-primary-dns
+    kind: ClusterIssuer

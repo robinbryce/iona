@@ -1,0 +1,28 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: public
+  namespace: iona
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(`iona.thaumagen.io`) && PathPrefix(`/public`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: thaumagen-github-io
+          # external clients see the cert for thaumagen.io. the router sees the
+          # tls cert for github.io because it is the client as far as github.io
+          # need be concerned
+          passHostHeader: false
+          scheme: https
+          port: 443
+
+      middlewares:
+        - name: add-iona-prefix
+  tls:
+    secretName: wild-thaumagen-io-cert
+

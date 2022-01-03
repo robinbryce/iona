@@ -6,6 +6,7 @@ vars:
   CONTEXT: iona-1
   CLUSTER: gke_iona-1_europe-west2-a_kluster
   KUBECTL: kubectl --context {{.CONTEXT}} --cluster {{.CLUSTER}}
+  KUSTOMIZE: kustomize
   CLUSTER_NAMESPACE: iona
   MONITORING_NAMESPACE: monitoring
   BINDIR: ~/.local/bin
@@ -24,6 +25,11 @@ tasks:
           CLUSTER: {{.CLUSTER}}
           KUBECTL: {{.KUBECTL}}"
 
+  apply:
+    desc: apply kustomized k8s manifests
+    cmds:
+      - |
+        {{.KUSTOMIZE}} build k8s | {{.KUBECTL}} apply -f -
   pf-grafana:
     desc: portforward for grafana access at http://localhost:3000/
     cmds:
@@ -92,6 +98,9 @@ tasks:
     desc: install any tooling necessary or useful (or echo information about where to get)
     cmds:
       - |
+        echo "Installing tfk8s"
+        go get github.com/jrhouston/tfk8s@v0.1.7
+        which tfk8s
         echo "Installing cert-manager cmctl utility"
         echo " ref: https://cert-manager.io/docs/usage/cmctl/"
         OS=$(go env GOOS); ARCH=$(go env GOARCH); curl -sL -o cmctl.tar.gz https://github.com/jetstack/cert-manager/releases/latest/download/cmctl-$OS-$ARCH.tar.gz

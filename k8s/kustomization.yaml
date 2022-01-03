@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - iona-traefik-middleware-add-iona-prefix.yaml
+  - iona-externalname-thaumagen-github-io.yaml
+  - iona-cert-wild-thaumagen.io.yaml
+  - iona-ingressroute-grafana.yaml # -> monitoring/grafana
+  - iona-ingressroute-static.yaml # -> github pages
+  - iona-ingressroute-public.yaml # -> github pages
+  - iona-ingressroute-authn.yaml # -> github pages
+  - iona-ingressroute-thaumagen.yaml # -> github pages
+
+
