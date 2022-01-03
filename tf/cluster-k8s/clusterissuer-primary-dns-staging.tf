@@ -17,7 +17,7 @@ resource "kubernetes_manifest" "clusterissuer_letsencrypt_staging_primary_dns" {
             "dns01" = {
               "cloudDNS" = {
                 "hostedZoneName" = "primary-dns"
-                "project" = "${local.gcp_project_name}"
+                "project" = "${local.gcp_project_id}"
               }
             }
           }
