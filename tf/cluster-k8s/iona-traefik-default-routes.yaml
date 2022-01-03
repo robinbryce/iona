@@ -1,18 +1,16 @@
 http:
 
   services:
-    # grafana:
-    #   loadBalancers:
-    #     servers:
-    #       - url: http://grafana.monitoring:80/
 
+    # failsafe service and available as soon as traefik is up
     nginx:
       loadBalancer:
         servers:
           - url: http://nginx.iona:80/
 
-    thaumagen-github-io:
-      loadBalancer:
-        passHostHeader: false
-        servers:
-          - url: https://thaumagen.github.io/
+    # for GitHub pages use this if the ExternalName k8s service approach becomes problematic
+    # thaumagen-github-io:
+    #   loadBalancer:
+    #     passHostHeader: false
+    #     servers:
+    #       - url: https://thaumagen.github.io/
