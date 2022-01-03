@@ -6,7 +6,7 @@ frame "iona" {
 component "<$ing>\nstatic ip" as staticip
 
 component "ingress-node-pool" {
-  cloud "ingress-node" as ingressnode 
+  cloud "ingress-node" as ingressnode
   component "<$svc>\nenvoy-lb" as envoylb
   ingressnode -> envoylb
 }
@@ -21,8 +21,20 @@ component "work-node-pool" {
 
 envoylb -> ionatraefik
 
+
+cloud "private services access" as privateservicesaccess
 }
 
 cloud "letsencrypt" as lestencrypt
+cloud "GitHub Pages" as githubpages
+
 ionatraefik ..> lestencrypt
+ionatraefik ..> githubpages
+
+frame "google services" {
+  cloud "memorystore (redis)" as redis
+}
+
+privateservicesaccess -> redis
+
 @enduml

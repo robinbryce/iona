@@ -7,6 +7,7 @@ vars:
   CLUSTER: gke_iona-1_europe-west2-a_kluster
   KUBECTL: kubectl --context {{.CONTEXT}} --cluster {{.CLUSTER}}
   CLUSTER_NAMESPACE: iona
+  MONITORING_NAMESPACE: monitoring
 
 tasks:
   default:
@@ -22,17 +23,48 @@ tasks:
           CLUSTER: {{.CLUSTER}}
           KUBECTL: {{.KUBECTL}}"
 
-  traefik-pf:
+  pf-grafana:
+    desc: portforward for grafana access at http://localhost:3000/
+    cmds:
+      - |
+        {{.KUBECTL}} -n {{.MONITORING_NAMESPACE}} port-forward service/grafana 3000:80
+
+  pf-traefik:
     desc: create admin port forwarding for traefik
     vars:
       N: '{{default .CLUSTER_NAMESPACE .N}}'
     cmds:
       - |
-        POD=$({{.KUBECTL}} -n {{.N}} get pod \
-          --selector=app.kubernetes.io/name=traefik-web \
-          --no-headers -o custom-columns=":metadata.name")
-        echo $POD
-        {{.KUBECTL}} -n {{.N}} port-forward --address localhost pod/$POD 8080
+        # POD=$({{.KUBECTL}} -n {{.N}} get pod \
+        #   --selector=app.kubernetes.io/name=traefik-web \
+        #   --no-headers -o custom-columns=":metadata.name")
+        # echo $POD
+        # {{.KUBECTL}} -n {{.N}} port-forward --address localhost pod/$POD 8080
+        {{.KUBECTL}} -n {{.N}} port-forward deployment/traefik 9000
+
+  pf-traefik-web:
+    desc: create admin port forwarding for traefik
+    vars:
+      N: '{{default .CLUSTER_NAMESPACE .N}}'
+    cmds:
+      - |
+        # POD=$({{.KUBECTL}} -n {{.N}} get pod \
+        #   --selector=app.kubernetes.io/name=traefik-web \
+        #   --no-headers -o custom-columns=":metadata.name")
+        # echo $POD
+        # {{.KUBECTL}} -n {{.N}} port-forward --address localhost pod/$POD 8080
+        {{.KUBECTL}} -n {{.N}} port-forward service/traefik-web 8080
+
+  grafana-resources:
+    desc: list all grafana resources in the chosen namespace {{.N}}
+    vars:
+      N: '{{default .MONITORING_NAMESPACE .N}}'
+    cmds:
+      - |
+        kubectl api-resources --verbs=list --namespaced -o name \
+        | xargs -n 1 {{.KUBECTL}} get --no-headers --show-kind --ignore-not-found -n {{.N}} \
+        | grep grafana
+
   iona-del-envoy-lb:
     desc: delete the envoy-lb deployment after a force canceled tf apply
     cmds:

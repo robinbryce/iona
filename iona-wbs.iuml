@@ -10,9 +10,11 @@ skinparam handwritten true
 *** work-node-pool
 *** kubeip-iam-role
 ** iona-cluster-k8s
-*** dns01solver service account
-*** kubeip service account
+*** dns01solver service account (workload identity)
+*** kubeip service account (workload identity)
 *** kubeip cluster role
 *** envoy-lb
 *** iona traefik (with letsencrypt tls certs)
+*** grafana & grafana service account (workload identity)
+*** grafana cluster role binding (for standard monitoring roles)
 @endwbs

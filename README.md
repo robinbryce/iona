@@ -27,11 +27,22 @@ Note: Diagrams in this document render using [Markdown Preview Enhanced](https:/
 
 ![Iona Components](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/robinbryce/iona/main/iona-components.iuml)
 
+- static ip: a static ip address is created. the ingress node pool is
+  restricted to a single instance node (vm) and kubeip is used to assign the
+  static ip to *any* node in that pool
+- ingress: instead of a loadbalancer (which is ~10GBP/month), we run an envoy proxy. the
+  pod is configured to use the *host* network and so listens on the static ip
+  assigned to the instance node by kube ip
+- content proxy and tls termination: traefik. letsencrypt is used for automatic
+  TLS certificates using dns01 challenges for the configured domain. traefik is
+  configured with routes proxying for thaumagen.gitgithub.io so that static
+  public content can be served directly from github.io (using GitHub Pages)
+
 - Cluster deployed and managed using terraform cloud via github
+- Public static content hosted via github pages & proxied through traefik
 - logging and monitoring enabled
 - n2-standard-4 nodes
 - NO LOAD BALANCER (reduces idle cost by ~50%). Envoy + Traefic based ingress. Achieve using a node pool specifically for ingress which is limited to a single vm. kubeip assigns the static ip to it.
-- traefik for dns01 letsencrypt tls certificate provisioning
 - The kubernetes resources for the above are considered part of the cluster and so are deployed and managed using the terraform kubernetes provider
 
 # Plan
@@ -57,9 +68,10 @@ what to set monitoring_service to for google_container_cluster
 * [ ] Enable Cloud DNS API
 * [ ] Enable Cloud Domains API
 * [ ] Enable Secrets Manager API
-* [ ] Enable Cloud Identity Aware Proxy
+* [ ] ~~~Enable Cloud Identity Aware Proxy~~~ not necessary
 * [ ] Enable Identity Platform
-
+* [ ] Service Networking API - to enable private service networking connection for managed redis
+* [ ] Google Cloud Memorystore for Redis API
 All can be found at APIs & Services / API Library except secrets manager.
 Secrets Manager API can be found in the Security menu
 
