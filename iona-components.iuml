@@ -14,14 +14,14 @@ component "ingress-node-pool" {
 staticip ..> ingressnode
 
 component "work-node-pool" {
-  component "<$svc>\niona-traefik" as ionatraefik 
+  component "<$svc>\niona-traefik" as ionatraefik
   component "<$svc,scale=0.25>\ncert manager" as  ionacertmanager
   cloud "<$svc>\nservices" as ionanginx
   ionacertmanager -> ionatraefik
   ionatraefik -> ionanginx
 }
 
-envoylb -> ionatraefik
+envoylb --> ionatraefik
 
 
 cloud "private services access" as privateservicesaccess
@@ -30,7 +30,7 @@ cloud "private services access" as privateservicesaccess
 cloud "letsencrypt" as lestencrypt
 cloud "GitHub Pages" as githubpages
 
-ionatraefik ..> lestencrypt
+ionacertmanager ..> lestencrypt
 ionatraefik ..> githubpages
 
 frame "google services" {
