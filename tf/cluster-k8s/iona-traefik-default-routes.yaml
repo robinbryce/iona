@@ -1,10 +1,10 @@
 http:
 
   services:
-    grafana:
-      loadBalancer:
-        servers:
-          - url: http://grafana.monitoring:80/
+    # grafana:
+    #   loadBalancers:
+    #     servers:
+    #       - url: http://grafana.monitoring:80/
 
     nginx:
       loadBalancer:
