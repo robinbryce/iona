@@ -77,7 +77,7 @@ module "cluster" {
       service_account    = "kluster-serviceaccount@${var.gcp_project_id}.iam.gserviceaccount.com"
     }
     work-pool = {
-      machine_type       = "n2-standard-4" # $$$
+      machine_type       = "e2-standard-2" # $$$
       initial_node_count = 1
       min_node_count     = 1
       max_node_count     = 16
