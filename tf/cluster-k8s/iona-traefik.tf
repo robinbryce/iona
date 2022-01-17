@@ -30,7 +30,7 @@ resource "kubernetes_config_map_v1" "traefik-env" {
 
   data = {
     ACME_EMAIL = "${var.traefik_acme_email}"
-    REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
+    # REDIS_ENDPOINT = "${local.redis_memcache_endpoint}"
   }
 }
 
