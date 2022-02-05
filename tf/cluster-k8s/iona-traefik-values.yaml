@@ -20,12 +20,11 @@ providers:
     endpoints:
 
   kubernetesCRD:
-    # routes can only reference services in their own namespace
+    # XXX: ? routes can only reference services in their own namespace by default ?
     allowCrossNamespace: true
     namespaces: [] # empty is ALL namespaces
 
-    # XXX: TODO: I think this is necessary to proxy to github pages for static
-    # content
+    # This is necessary to proxy to github pages for static content
     allowExternalNameServices: true
   kubernetesingress:
     enabled: false
@@ -50,24 +49,9 @@ logs:
 # All available options available on https://docs.traefik.io/reference/static-configuration/cli/
 ## Use curly braces to pass values: `helm install --set="additionalArguments={--providers.kubernetesingress.ingressclass=traefik-internal,--log.level=DEBUG}"`
 #additionalArguments:
-#  - --api.insecure=true
-#  #- --entrypoints.web.address=:80
-#  #- --entrypoints.websecure.address=:443
-#  #- --entrypoints.ping.address=:10254
-#  # - --ping.entrypoint=ping
+#  - --ping.entrypoint=ping
 #  - --providers.file.directory=/etc/traefik/dynamic/default-routes
-#  - --providers.redis=true
-#  - --providers.redis.endpoints=${REDIS_ENDPOINT}
-#  # - --providers.redis.tls.ca=${REDIS_SERVER_CA}
-#  # - --providers.redis.tls.key=${REDIS_CLIENT_KEY}
-#  # - --providers.redis.tls.cert=${REDIS_CLIENT_CERT}
-#  - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
-#  - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=gcloud
-#  - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-#  - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
-#  - --certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt/acme-staging.json
-##  - "--providers.kubernetesingress.ingressclass=traefik-internal"
-##  - "--log.level=DEBUG"
+#  - "--log.level=DEBUG"
 
 envFrom:
   - configMapRef:
@@ -85,10 +69,9 @@ ports:
 service:
   type: ClusterIP
   # type: LoadBalancer - this picks up the kubeip static ip for the ingress
-  # node and GCP creates a target-pool + forwarding rule. If we go this road,
-  # provided we sort out KV store for letsencrypt certs, we can drop the
-  # envoy-lb service all together. We would need to do this bit in HCL to
-  # cleanly inject the static ip address
+  # node and GCP creates a target-pool + forwarding rule. If we go this road we
+  # can drop the envoy-lb service all together. We would need to do this bit in
+  # HCL to cleanly inject the static ip address
   # see https://cloud.google.com/load-balancing/docs/target-pools
 
 rbac:
@@ -96,9 +79,7 @@ rbac:
   enabled: false
 
 serviceAccount:
-  # we currently use cert-manager, but its a useful fallback to have this in
-  # traefik too
-  name: "dns01solver-sa"
+  name: "traefik-sa"
 
 # Additional serviceAccount annotations (e.g. for oidc authentication)
 serviceAccountAnnotations: {}

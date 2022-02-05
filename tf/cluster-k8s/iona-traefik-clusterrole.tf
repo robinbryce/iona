@@ -49,9 +49,7 @@ resource "kubernetes_cluster_role_binding" "traefik" {
   }
   subject {
     kind      = "ServiceAccount"
-    name      = "dns01solver-sa"
-    # be explicit, because the GCP SA binding only works for the declared ns
-    namespace = "${local.gcp_project_name}"
+    name      = "traefik-sa"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"

@@ -1,9 +1,9 @@
-resource "kubernetes_service_account_v1" "traefik" {
+resource "kubernetes_service_account_v1" "traefik-sa" {
   metadata {
-    name = "dns01solver-sa"
+    name = "traefik-sa"
     namespace = "${local.gcp_project_name}"
-    annotations = {
-      "iam.gke.io/gcp-service-account" = "dns01solver-sa@${local.gcp_project_id}.iam.gserviceaccount.com"
-    }
+    # annotations = {
+    #   "iam.gke.io/gcp-service-account" = "traefik-sa@${local.gcp_project_id}.iam.gserviceaccount.com"
+    # }
   }
 }
