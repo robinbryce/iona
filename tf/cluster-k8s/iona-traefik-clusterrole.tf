@@ -50,6 +50,7 @@ resource "kubernetes_cluster_role_binding" "traefik" {
   subject {
     kind      = "ServiceAccount"
     name      = "traefik-sa"
+    namespace = "${local.gcp_project_name}"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
