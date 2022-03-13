@@ -20,7 +20,7 @@ resource "google_project_iam_member" "gh-oidc" {
 resource "google_project_iam_member" "gh-oidc-storage-writer" {
   project = var.project
   role = "roles/storage.legacyBucketWriter"
-  member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/iona-app"
+  member = "gha-cd-iona-app@iona-1.iam.gserviceaccount.com"
 }
 
 # XXX TODO need to depend on the sa above so it gets created first! applying
