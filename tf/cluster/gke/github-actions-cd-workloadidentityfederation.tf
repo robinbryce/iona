@@ -9,7 +9,7 @@ resource "google_service_account" "gh-oidc" {
 
 resource "google_project_iam_member" "gh-oidc" {
   project = var.project
-  role = "projects/${var.project}/roles/iam.workloadIdentityUser"
+  role = "roles/iam.workloadIdentityUser"
   member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/iona-app"
 }
 
