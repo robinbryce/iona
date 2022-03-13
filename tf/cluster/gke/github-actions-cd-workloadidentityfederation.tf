@@ -17,7 +17,7 @@ resource "google_project_iam_member" "gh-oidc" {
 # project. this means that for a new project, this permission will be
 # insufficient to push the first image. (push the first one by hand or create a
 # special sa as storage.admin is very over powered)
-resource "google_project_iam_member" "gh-oidc" {
+resource "google_project_iam_member" "gh-oidc-storage-writer" {
   project = var.project
   role = "roles/storage.legacyBucketWriter"
   member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/iona-app"
