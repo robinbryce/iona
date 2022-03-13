@@ -24,14 +24,14 @@ module "gh_oidc" {
   attribute_mapping = {
     "google.subject": "assertion.sub",
     "attribute.actor": "assertion.actor",
-    "attribute.aud": "assertion.aud",
-    "attribute.repository": "assertion.repository"
+    "attribute.aud": "assertion.aud"#,
+    #"attribute.repository": "assertion.repository"
   }
   sa_mapping = {
     "gha-cd-iona-app" = {
       sa_name   = "projects/${var.project}/serviceAccounts/gha-cd-iona-app@${var.project}.iam.gserviceaccount.com"
-      attribute = "attribute.repository/robinbryce/iona-app"
-      # attribute = "*"
+      # attribute = "attribute.repository/robinbryce/iona-app"
+      attribute = "*"
     }
   }
 }
