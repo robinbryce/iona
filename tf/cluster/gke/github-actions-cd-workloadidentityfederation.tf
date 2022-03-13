@@ -19,7 +19,7 @@ resource "google_project_iam_custom_role" "imagepush" {
   project = var.project
 
   permissions = [
-    "storage.buckets.get"
+    "storage.buckets.get",
     "storage.objects.create",
     "storage.objects.get",
     "storage.objects.list"
