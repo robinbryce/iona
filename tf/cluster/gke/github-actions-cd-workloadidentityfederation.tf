@@ -1,3 +1,12 @@
+resource "google_service_account" "gh-oidc" {
+  for_each = {
+    iona_app = ["robinbryce", "iona-app"]
+  }
+  account_id   = "gha-cd-${each.value[1]}"
+  display_name = substr("GitHub Actions ${each.value[0]}/${each.value[1]}", 0, 100)
+  project      = var.project
+}
+
 module "gh_oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
   project_id  = var.project
