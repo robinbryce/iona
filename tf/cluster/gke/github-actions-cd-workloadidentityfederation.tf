@@ -13,6 +13,16 @@ resource "google_project_iam_member" "gh-oidc" {
   member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/iona-app"
 }
 
+# Note: the bucket for the registry host is created on first use in the
+# project. this means that for a new project, this permission will be
+# insufficient to push the first image. (push the first one by hand or create a
+# special sa as storage.admin is very over powered)
+resource "google_project_iam_member" "gh-oidc" {
+  project = var.project
+  role = "roles/storage.legacyBucketWriter"
+  member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/iona-app"
+}
+
 # XXX TODO need to depend on the sa above so it gets created first! applying
 # twice fixes it for now
 module "gh_oidc" {
