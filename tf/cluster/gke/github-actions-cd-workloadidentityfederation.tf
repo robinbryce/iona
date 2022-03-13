@@ -13,29 +13,29 @@ resource "google_project_iam_member" "gh-oidc" {
   member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/iona-app"
 }
 
-resource "google_project_iam_custom_role" "imagepush" {
-  role_id = "imagepush"
-  title = "Role to enable GitHub Actions to push to the project container registry"
-  project = var.project
-
-  permissions = [
-    "storage.buckets.get",
-    "storage.objects.create",
-    "storage.objects.get",
-    "storage.objects.list"
-  ]
-}
-
-# Note: the bucket for the registry host is created on first use in the
-# project. this means that for a new project, this permission will be
-# insufficient to push the first image. (push the first one by hand or create a
-# special sa as storage.admin is very over powered)
-resource "google_project_iam_member" "gha-imagepush" {
-  project = var.project
-  role = "projects/${var.project}/roles/imagepush"
-  member = "serviceAccount:gha-cd-iona-app@${var.project}.iam.gserviceaccount.com"
-  depends_on = [google_project_iam_custom_role.imagepush]
-}
+#resource "google_project_iam_custom_role" "imagepush" {
+#  role_id = "imagepush"
+#  title = "Role to enable GitHub Actions to push to the project container registry"
+#  project = var.project
+#
+#  permissions = [
+#    "storage.buckets.get",
+#    "storage.objects.create",
+#    "storage.objects.get",
+#    "storage.objects.list"
+#  ]
+#}
+#
+## Note: the bucket for the registry host is created on first use in the
+## project. this means that for a new project, this permission will be
+## insufficient to push the first image. (push the first one by hand or create a
+## special sa as storage.admin is very over powered)
+#resource "google_project_iam_member" "gha-imagepush" {
+#  project = var.project
+#  role = "projects/${var.project}/roles/imagepush"
+#  member = "serviceAccount:gha-cd-iona-app@${var.project}.iam.gserviceaccount.com"
+#  depends_on = [google_project_iam_custom_role.imagepush]
+#}
 
 # XXX TODO need to depend on the sa above so it gets created first! applying
 # twice fixes it for now
