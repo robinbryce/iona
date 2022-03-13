@@ -5,3 +5,6 @@ tf/cluster-k8s/.terraform
 tf/authn/.terraform
 .*
 credentials/
+py
+env
+k8s

@@ -25,11 +25,12 @@ tasks:
           CLUSTER: {{.CLUSTER}}
           KUBECTL: {{.KUBECTL}}"
 
-  apply:
+  deploy:
     desc: apply kustomized k8s manifests
     cmds:
       - |
         {{.KUSTOMIZE}} build k8s | {{.KUBECTL}} apply -f -
+
   pf-grafana:
     desc: portforward for grafana access at http://localhost:3000/
     cmds:

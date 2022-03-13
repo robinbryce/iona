@@ -1,0 +1,92 @@
+interpreter: bash -c
+name: tok8
+usage: conveniences and ergonomics for tokenator
+
+options:
+
+  node:
+    short: "n"
+    default: "ethnode0"
+  nodes-url:
+    default: https://iona.thaumagen.io/node/
+
+  token:
+    short: t
+
+  verbose:
+    type: bool
+    default: false
+    short: v
+
+  tuskdir:
+    private: true
+    usage: "so all tasks can refer to the directory containing this tusk file"
+    default:
+      command: echo $(pwd)
+
+tasks:
+
+  delete-label:
+    usage: delete all resources with one specific label
+    description: |
+      delete resources tagged with a sepcific label. use to cleanup after scaffold or delete
+      user labels
+
+      example skaffold label: skaffold.dev/run-id=3af0e3dc-6227-4846-8e16-e35560055833
+
+      example user: user-deploy=$USER-apikeystore
+
+    args:
+      namespace:
+      label:
+    run:
+      - command:
+          exec: |
+            set -e
+            for resource in $(kubectl api-resources --verbs=list --namespaced -o name); do
+              for target in $(kubectl get \
+                --show-kind \
+                -l ${label} \
+                --ignore-not-found \
+                -n ${namespace} \
+                -o name ${resource} 2> /dev/null); do
+                echo $target
+                kubectl delete $target -n ${namespace}
+              done
+            done
+
+
+  delete-failed:
+    args:
+      namespace:
+    run:
+      - command:
+          exec: |
+            for name in $(kubectl -n ${namespace} get pod --field-selector status.phase=Failed -o name); do
+              kubectl -n ${namespace} delete $name
+            done
+
+  jsonrpc:
+    usage: get block height using exchanged token
+    options:
+      method:
+        default: "admin_nodeInfo"
+      params:
+        default: "[]"
+    run:
+      - command:
+          exec: |
+            set -x
+
+            TOKEN=${token}
+            if [ "${TOKEN}" == "" ]; then
+              TOKEN=$(cat .token)
+            fi
+            echo $TOKEN
+
+            curl -v -k \
+              --data '{"jsonrpc": "2.0","method": "${method}","params": ${params},"id": 0}' \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer ${TOKEN}" \
+              ${nodeurl} \
+            jq -r .

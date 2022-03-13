@@ -7,7 +7,6 @@ resources:
   - iona-ingressroute-grafana.yaml # -> monitoring/grafana
   - iona-ingressroute-static.yaml # -> github pages
   - iona-ingressroute-public.yaml # -> github pages
-  - iona-ingressroute-authn.yaml # -> github pages
   - iona-ingressroute-thaumagen.yaml # -> github pages
 
 
