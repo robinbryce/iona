@@ -1,3 +1,23 @@
+
+resource "google_project_iam_custom_role" "storagereader" {
+  role_id = "storagereader"
+  title = "Role to enable listing and reading of storage objects"
+  project = var.project
+
+  permissions = [
+    "storage.buckets.get",
+    "storage.objects.get",
+    "storage.objects.list"
+  ]
+}
+
+resource "google_project_iam_member" "fluxcd-storagereader" {
+  project = var.project
+  role = "projects/${var.project}/roles/storagereader"
+  member = "serviceAccount:fluxcd-sa@${var.project}.iam.gserviceaccount.com"
+  depends_on = [google_project_iam_custom_role.storagereader]
+}
+
 # -----------------------------------------------------------------------------
 # kubeip service account and role
 # -----------------------------------------------------------------------------
