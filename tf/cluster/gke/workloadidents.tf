@@ -18,6 +18,8 @@ resource "google_service_account_iam_member" "workloads" {
   for_each = {
     kubeip = ["kube-system", "kubeip-sa"]
     fluxcd = ["flux-system", "fluxcd-sa"]
+    fluxcd = ["flux-system", "image-automation-controller"]
+    fluxcd = ["flux-system", "image-reflector-controller"]
   }
 
   service_account_id = google_service_account.workloads[each.key].name
