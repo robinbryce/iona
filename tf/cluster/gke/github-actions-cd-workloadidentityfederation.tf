@@ -53,7 +53,7 @@ resource "google_project_iam_member" "gha-imagepush" {
 ## by tf
 module "gh_oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  project_id  = var.gcp_project_id
+  project_id  = var.project
   pool_id     = "github-oidc"
   provider_id = "github-provider"
   provider_description = "Workload Identity Pool Provider for GitHub Actions based CD. A service account exists for each enabled repository, named after that repostiory gha-cd-<repo>"
@@ -67,12 +67,12 @@ module "gh_oidc" {
   sa_mapping = {
 
     "gha-cd-iona-app" = {
-      sa_name   = "projects/${var.gcp_project_id}/serviceAccounts/gha-cd-iona-app@${var.gcp_project_id}.iam.gserviceaccount.com"
+      sa_name   = "projects/${var.project}/serviceAccounts/gha-cd-iona-app@${var.project}.iam.gserviceaccount.com"
       # attribute = "attribute.repository/robinbryce/iona-app"
       attribute = "*"
     }
     "gha-cd-tokenator" = {
-      sa_name   = "projects/${var.gcp_project_id}/serviceAccounts/gha-cd-tokenator@${var.gcp_project_id}.iam.gserviceaccount.com"
+      sa_name   = "projects/${var.project}/serviceAccounts/gha-cd-tokenator@${var.project}.iam.gserviceaccount.com"
       # attribute = "attribute.repository/robinbryce/iona-app"
       attribute = "*"
     }
