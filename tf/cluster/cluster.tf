@@ -123,34 +123,3 @@ module "cluster" {
     ]
   }
 }
-
-## XXX TODO need to depend on the sa above so it gets created first! applying
-## twice fixes it for now
-module "gh_oidc" {
-  source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  project_id  = var.gcp_project_id
-  pool_id     = "github-oidc"
-  provider_id = "github-provider"
-  provider_description = "Workload Identity Pool Provider for GitHub Actions based CD. A service account exists for each enabled repository, named after that repostiory gha-cd-<repo>"
-  attribute_mapping = {
-    "google.subject": "assertion.sub",
-    "attribute.actor": "assertion.actor",
-    "attribute.aud": "assertion.aud"#,
-    #"attribute.repository": "assertion.repository"
-  }
-
-  sa_mapping = {
-
-    "gha-cd-iona-app" = {
-      sa_name   = "projects/${var.gcp_project_id}/serviceAccounts/gha-cd-iona-app@${var.gcp_project_id}.iam.gserviceaccount.com"
-      # attribute = "attribute.repository/robinbryce/iona-app"
-      attribute = "*"
-    }
-    "gha-cd-tokenator" = {
-      sa_name   = "projects/${var.gcp_project_id}/serviceAccounts/gha-cd-tokenator@${var.gcp_project_id}.iam.gserviceaccount.com"
-      # attribute = "attribute.repository/robinbryce/iona-app"
-      attribute = "*"
-    }
-  }
-  depends_on = [ module.cluster ]
-}
