@@ -51,7 +51,7 @@ resource "google_project_iam_member" "gha-imagepush" {
 resource "google_iam_workload_identity_pool" "main" {
   provider                  = google-beta
   project                   = var.project
-  workload_identity_pool_id = "github-oidc"
+  workload_identity_pool_id = "github-oidc-1"  # can't be deleted & re-created so we need to change the name
   display_name              = "github-oidc"
   description               = "Workload Identity Pool managed by Terraform"
   disabled                  = false
