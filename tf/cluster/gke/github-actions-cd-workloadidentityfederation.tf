@@ -58,8 +58,8 @@ resource "google_project_iam_member" "gha-imagepush" {
 #}
 
 locals {
-  wif_pool_id = "projects/iona-1/locations/global/workloadIdentityPools/github-oidc/providers/github-provider"
-  wif_pool_name = "projects/871349271977/locations/global/workloadIdentityPools/github-oidc/providers/github-provider"
+  wif_pool_id = "projects/iona-1/locations/global/workloadIdentityPools/github-oidc"
+  wif_pool_numeric_id = "projects/871349271977/locations/global/workloadIdentityPools/github-oidc"
 }
 
 resource "google_iam_workload_identity_pool_provider" "main" {
@@ -89,8 +89,8 @@ resource "google_service_account_iam_member" "wif-sa" {
   for_each = local.repositories
   service_account_id = "projects/${var.project}/serviceAccounts/gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
   role               = "roles/iam.workloadIdentityUser"
-  # member             = "principalSet://iam.googleapis.com/${local.wif_pool_name}/attribute.repository/${each.value[0]}/${each.value[1]}"
-  member             = "principalSet://iam.googleapis.com/${local.wif_pool_name}/*"
+  member             = "principalSet://iam.googleapis.com/${local.wif_pool_numeric_id}/attribute.repository/${each.value[0]}/${each.value[1]}"
+  #member             = "principalSet://iam.googleapis.com/${local.wif_pool_numeric_id}/*"
 }
 
 ### We need the service accounts to exist before creating thw workload identity
