@@ -52,7 +52,7 @@ resource "google_iam_workload_identity_pool" "main" {
   provider                  = google-beta
   project                   = var.project
   workload_identity_pool_id = "github-oidc"
-  display_name              = "Workload Identity Pool managed by Terraform"
+  display_name              = "github-oidc"
   description               = "Workload Identity Pool managed by Terraform"
   disabled                  = false
 }
