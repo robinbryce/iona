@@ -57,13 +57,14 @@ tasks:
 
 
   delete-failed:
-    args:
-      namespace:
     run:
       - command:
           exec: |
-            for name in $(kubectl -n ${namespace} get pod --field-selector status.phase=Failed -o name); do
-              kubectl -n ${namespace} delete $name
+            for ns in $(kubectl get namespace -o custom-columns=":metadata.name"); do
+              [ -z "$ns" ] && continue
+              for name in $(kubectl -n ${ns} get pod --field-selector status.phase=Failed -o name); do
+                kubectl -n ${ns} delete $name
+              done
             done
 
   jsonrpc:

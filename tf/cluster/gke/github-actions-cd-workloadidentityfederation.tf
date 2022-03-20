@@ -18,7 +18,7 @@ resource "google_project_iam_member" "gh-oidc" {
   for_each = local.repositories
   project = var.project
   role = "roles/iam.workloadIdentityUser"
-  member = "principalSet://iam.googleapis.com/projects/871349271977/locations/global/workloadIdentityPools/github-oidc/attribute.repository/robinbryce/${each.value[1]}"
+  member = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/attribute.repository/${each.value[0]}/${each.value[1]}"
 }
 
 resource "google_project_iam_custom_role" "imagepush" {
@@ -91,36 +91,3 @@ resource "google_service_account_iam_member" "wif-sa" {
   #member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/attribute.repository/${each.value[0]}/${each.value[1]}"
   member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/*"
 }
-
-### We need the service accounts to exist before creating thw workload identity
-### pool resources which refere to them. This module should have been created at the top level so that it can depend on the
-### cluster module. Its difficult to fix this because the pools can't be deleted
-### by tf
-#module "gh_oidc" {
-#  source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-#  project_id  = var.project
-#  pool_id     = "github-oidc"
-#  provider_id = "github-provider"
-#  provider_description = "Workload Identity Pool Provider for GitHub Actions based CD. A service account exists for each enabled repository, named after that repostiory gha-cd-<repo>"
-#  attribute_mapping = {
-#    "google.subject": "assertion.sub",
-#    "attribute.actor": "assertion.actor",
-#    "attribute.aud": "assertion.aud"#,
-#    #"attribute.repository": "assertion.repository"
-#  }
-#
-#  sa_mapping = {
-#
-#    "gha-cd-iona-app" = {
-#      sa_name   = "projects/${var.project}/serviceAccounts/gha-cd-iona-app@${var.project}.iam.gserviceaccount.com"
-#      # attribute = "attribute.repository/robinbryce/iona-app"
-#      attribute = "*"
-#    }
-#    "gha-cd-tokenator" = {
-#      sa_name   = "projects/${var.project}/serviceAccounts/gha-cd-tokenator@${var.project}.iam.gserviceaccount.com"
-#      # attribute = "attribute.repository/robinbryce/iona-app"
-#      attribute = "*"
-#    }
-#  }
-#  # depends_on = [ module.cluster ]
-#}
