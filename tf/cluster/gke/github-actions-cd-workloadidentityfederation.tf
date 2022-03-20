@@ -1,4 +1,4 @@
-
+# I think we want to manage the repos, and the workload identity pool for them, in their own workspace
 locals {
   repositories = {
     iona_app = ["robinbryce", "iona-app"]
@@ -45,4 +45,37 @@ resource "google_project_iam_member" "gha-imagepush" {
   role = "projects/${var.project}/roles/imagepush"
   member = "serviceAccount:gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
   depends_on = [google_project_iam_custom_role.imagepush]
+}
+
+## We need the service accounts to exist before creating thw workload identity
+## pool resources which refere to them. This module should have been created at the top level so that it can depend on the
+## cluster module. Its difficult to fix this because the pools can't be deleted
+## by tf
+module "gh_oidc" {
+  source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
+  project_id  = var.gcp_project_id
+  pool_id     = "github-oidc"
+  provider_id = "github-provider"
+  provider_description = "Workload Identity Pool Provider for GitHub Actions based CD. A service account exists for each enabled repository, named after that repostiory gha-cd-<repo>"
+  attribute_mapping = {
+    "google.subject": "assertion.sub",
+    "attribute.actor": "assertion.actor",
+    "attribute.aud": "assertion.aud"#,
+    #"attribute.repository": "assertion.repository"
+  }
+
+  sa_mapping = {
+
+    "gha-cd-iona-app" = {
+      sa_name   = "projects/${var.gcp_project_id}/serviceAccounts/gha-cd-iona-app@${var.gcp_project_id}.iam.gserviceaccount.com"
+      # attribute = "attribute.repository/robinbryce/iona-app"
+      attribute = "*"
+    }
+    "gha-cd-tokenator" = {
+      sa_name   = "projects/${var.gcp_project_id}/serviceAccounts/gha-cd-tokenator@${var.gcp_project_id}.iam.gserviceaccount.com"
+      # attribute = "attribute.repository/robinbryce/iona-app"
+      attribute = "*"
+    }
+  }
+  # depends_on = [ module.cluster ]
 }
