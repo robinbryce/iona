@@ -48,26 +48,25 @@ resource "google_project_iam_member" "gha-imagepush" {
 }
 
 # hack around the fact that pools don't like to be re-created
-#resource "google_iam_workload_identity_pool" "main" {
-#  provider                  = google-beta
-#  project                   = var.project
-#  workload_identity_pool_id = "github-oidc"
-#  display_name              = "Workload Identity Pool managed by Terraform"
-#  description               = "Workload Identity Pool managed by Terraform"
-#  disabled                  = false
-#}
-
-locals {
-  wif_pool_id = "projects/iona-1/locations/global/workloadIdentityPools/github-oidc"
-  wif_pool_numeric_id = "projects/871349271977/locations/global/workloadIdentityPools/github-oidc"
+resource "google_iam_workload_identity_pool" "main" {
+  provider                  = google-beta
+  project                   = var.project
+  workload_identity_pool_id = "github-oidc"
+  display_name              = "Workload Identity Pool managed by Terraform"
+  description               = "Workload Identity Pool managed by Terraform"
+  disabled                  = false
 }
+
+#locals {
+#  wif_pool_id = "projects/iona-1/locations/global/workloadIdentityPools/github-oidc"
+#  wif_pool_numeric_id = "projects/871349271977/locations/global/workloadIdentityPools/github-oidc"
+#}
 
 resource "google_iam_workload_identity_pool_provider" "main" {
   provider                           = google-beta
   project                            = var.project
   # hack around the fact that pools don't like to be re-created
-  # workload_identity_pool_id          = google_iam_workload_identity_pool.main.workload_identity_pool_id
-  workload_identity_pool_id          = local.wif_pool_id
+  workload_identity_pool_id          = google_iam_workload_identity_pool.main.workload_identity_pool_id
   workload_identity_pool_provider_id = "github-provider"
   display_name                       = "github-provider"
   description                        = "Workload Identity Pool Provider for GitHub Actions based CD. A service account exists for each enabled repository, named after that repostiory gha-cd-<repo>"
@@ -89,8 +88,8 @@ resource "google_service_account_iam_member" "wif-sa" {
   for_each = local.repositories
   service_account_id = "projects/${var.project}/serviceAccounts/gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
   role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/${local.wif_pool_numeric_id}/attribute.repository/${each.value[0]}/${each.value[1]}"
-  #member             = "principalSet://iam.googleapis.com/${local.wif_pool_numeric_id}/*"
+  #member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/attribute.repository/${each.value[0]}/${each.value[1]}"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/*"
 }
 
 ### We need the service accounts to exist before creating thw workload identity
