@@ -38,13 +38,25 @@ resource "google_project_iam_custom_role" "imagepush" {
 # project. this means that for a new project, this permission will be
 # insufficient to push the first image. (push the first one by hand or create a
 # special sa as storage.admin is very over powered)
-resource "google_project_iam_member" "gha-imagepush" {
+
+resource "google_project_iam_member" "gha-objectcreator" {
   for_each = local.repositories
 
   project = var.project
-  role = "projects/${var.project}/roles/imagepush"
+  # role = "projects/${var.project}/roles/imagepush"
+  role = "roles/storage.objectCreator"
   member = "serviceAccount:gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
-  depends_on = [google_project_iam_custom_role.imagepush]
+  # depends_on = [google_project_iam_custom_role.imagepush]
+}
+
+resource "google_project_iam_member" "gha-objectviewer" {
+  for_each = local.repositories
+
+  project = var.project
+  # role = "projects/${var.project}/roles/imagepush"
+  role = "roles/storage.objectViewer"
+  member = "serviceAccount:gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
+  # depends_on = [google_project_iam_custom_role.imagepush]
 }
 
 # hack around the fact that pools don't like to be re-created
