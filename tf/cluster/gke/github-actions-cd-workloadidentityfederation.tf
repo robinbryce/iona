@@ -35,7 +35,7 @@ resource "google_project_iam_custom_role" "imagepush" {
 
     "orgpolicy.policy.get",
     "resourcemanager.projects.get",
-    "resourcemanager.projects.list",
+    #"resourcemanager.projects.list",
     "storage.multipartUploads.abort",
     "storage.multipartUploads.create",
     "storage.multipartUploads.list",
