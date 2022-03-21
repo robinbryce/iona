@@ -27,9 +27,24 @@ resource "google_project_iam_custom_role" "imagepush" {
   project = var.project
 
   permissions = [
+
+    #   roles/storage.objectViewer
+    # + roles/storage.objectCreator
+    # + roles/storage.legacyObjectOwner
+    # + roles/storage.legacyBucketWriter
+
+    "orgpolicy.policy.get",
+    "resourcemanager.projects.get",
+    "resourcemanager.projects.list",
+    "storage.multipartUploads.abort",
+    "storage.multipartUploads.create",
+    "storage.multipartUploads.list",
+    "storage.multipartUploads.listParts",
     "storage.buckets.get",
-    "storage.objects.create",
     "storage.objects.get",
+    "storage.objects.update",
+    "storage.objects.create",
+    "storage.objects.delete",
     "storage.objects.list"
   ]
 }
@@ -39,24 +54,13 @@ resource "google_project_iam_custom_role" "imagepush" {
 # insufficient to push the first image. (push the first one by hand or create a
 # special sa as storage.admin is very over powered)
 
-resource "google_project_iam_member" "gha-objectcreator" {
+resource "google_project_iam_member" "gha-imagepush" {
   for_each = local.repositories
 
   project = var.project
-  # role = "projects/${var.project}/roles/imagepush"
-  role = "roles/storage.objectCreator"
+  role = "projects/${var.project}/roles/imagepush"
   member = "serviceAccount:gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
-  # depends_on = [google_project_iam_custom_role.imagepush]
-}
-
-resource "google_project_iam_member" "gha-objectviewer" {
-  for_each = local.repositories
-
-  project = var.project
-  # role = "projects/${var.project}/roles/imagepush"
-  role = "roles/storage.objectViewer"
-  member = "serviceAccount:gha-cd-${each.value[1]}@${var.project}.iam.gserviceaccount.com"
-  # depends_on = [google_project_iam_custom_role.imagepush]
+  depends_on = [google_project_iam_custom_role.imagepush]
 }
 
 # hack around the fact that pools don't like to be re-created
@@ -68,11 +72,6 @@ resource "google_iam_workload_identity_pool" "main" {
   description               = "Workload Identity Pool managed by Terraform"
   disabled                  = false
 }
-
-#locals {
-#  wif_pool_id = "projects/iona-1/locations/global/workloadIdentityPools/github-oidc"
-#  wif_pool_numeric_id = "projects/871349271977/locations/global/workloadIdentityPools/github-oidc"
-#}
 
 resource "google_iam_workload_identity_pool_provider" "main" {
   provider                           = google-beta
