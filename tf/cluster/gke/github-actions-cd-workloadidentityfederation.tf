@@ -3,6 +3,8 @@ locals {
   repositories = {
     iona_app = ["robinbryce", "iona-app"]
     tokenator = ["robinbryce", "tokenator"]
+    authex = ["robinbryce", "authex"]
+    apikeystore = ["robinbryce", "apikeystore"]
   }
 }
 
