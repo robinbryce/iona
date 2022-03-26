@@ -1,7 +1,11 @@
 # I think we want to manage the repos, and the workload identity pool for them, in their own workspace
 locals {
   repositories = {
+    # cd/cd tooling
+    toolbelt = ["robinbryce", "toolbelt"]
+    # iona-console repositories
     iona_app = ["robinbryce", "iona-app"]
+    # iona-iam repositories
     tokenator = ["robinbryce", "tokenator"]
     authex = ["robinbryce", "authex"]
     apikeystore = ["robinbryce", "apikeystore"]
