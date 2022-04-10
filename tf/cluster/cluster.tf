@@ -79,13 +79,13 @@ module "cluster" {
     work-pool = {
       machine_type       = "e2-standard-2" # $$$
       initial_node_count = 1
-      min_node_count     = 1
+      min_node_count     = 8
       max_node_count     = 16
       preemptible        = true
       auto_repair        = true
       auto_upgrade       = true
       disk_size_gb       = 64
-      disk_type          = "pd-standard"
+      disk_type          = "pd-balanced"
       image_type         = "COS"
       service_account    = "kluster-serviceaccount@${var.gcp_project_id}.iam.gserviceaccount.com"
     }
