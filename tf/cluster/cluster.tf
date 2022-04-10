@@ -85,7 +85,7 @@ module "cluster" {
       preemptible        = true
       auto_repair        = true
       auto_upgrade       = true
-      disk_size_gb       = 64
+      disk_size_gb       = 16
       disk_type          = "pd-balanced"
       image_type         = "COS"
       service_account    = "kluster-serviceaccount@${var.gcp_project_id}.iam.gserviceaccount.com"
