@@ -79,9 +79,9 @@ module "cluster" {
 
     work-pool = {
       machine_type       = "e2-standard-2" # $$$
-      initial_node_count = 8
-      min_node_count     = 8
-      max_node_count     = 16
+      initial_node_count = 2
+      min_node_count     = 2
+      max_node_count     = 8
       preemptible        = true
       auto_repair        = true
       auto_upgrade       = true
