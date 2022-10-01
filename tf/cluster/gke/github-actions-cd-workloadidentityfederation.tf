@@ -9,6 +9,8 @@ locals {
     tokenator = ["robinbryce", "tokenator"]
     authex = ["robinbryce", "authex"]
     apikeystore = ["robinbryce", "apikeystore"]
+    # chaintrap
+    chaintrap-maptool = ["polysensus", "chaintrap-maptool"]
   }
 }
 

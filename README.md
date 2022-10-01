@@ -55,8 +55,7 @@ Note: Diagrams in this document render using [Markdown Preview Enhanced](https:/
 
 * [Project Page](https://github.com/users/robinbryce/projects/2)
 
-# Build
-# GKE Project checklist
+# Rebuild GKE Project checklist
 
 ## Enable API's
 

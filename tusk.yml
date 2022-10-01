@@ -1,8 +1,21 @@
 interpreter: bash -c
-name: tok8
+name: iona
 usage: conveniences and ergonomics for tokenator
 
 options:
+
+  launchdir:
+    usage: >
+      Don't set this option. Its a work around for a go-tusk peculiarity
+    environment: PWD
+  tuskdir:
+    private: true
+    usage: "so all tasks can refer to the directory containing this tusk file"
+    default:
+      command: echo $(pwd)
+
+  namespace:
+    default: iona
 
   node:
     short: "n"
@@ -18,13 +31,46 @@ options:
     default: false
     short: v
 
-  tuskdir:
-    private: true
-    usage: "so all tasks can refer to the directory containing this tusk file"
-    default:
-      command: echo $(pwd)
-
 tasks:
+
+  suspend-cd:
+    options:
+    run:
+      - command:
+          exec: |
+            for name in $(kubectl get -n ${namespace} kustomizations -o name); do
+              name=$(echo -n $name | cut -d '/' -f2)
+              flux suspend kustomization -n ${namespace} ${name}
+            done
+
+  resume-cd:
+    options:
+    run:
+      - command:
+          exec: |
+            for name in $(kubectl get -n ${namespace} kustomizations -o name); do
+              name=$(echo -n $name | cut -d '/' -f2)
+              flux resume kustomization -n ${namespace} ${name}
+            done
+
+  reconcile:
+    run:
+      - command:
+          exec: |
+            set -e
+
+            for name in $(kubectl -n ${namespace} get gitrepositories -o name); do
+              echo $name
+              name=$(echo -n $name | cut -d '/' -f2)
+              flux reconcile source git -n ${namespace} ${name}
+            done
+
+            for name in $(kubectl -n ${namespace} get kustomization -o name); do
+              echo $name
+              name=$(echo -n $name | cut -d '/' -f2)
+              flux reconcile kustomization -n ${namespace} ${name}
+            done
+
 
   delete-label:
     usage: delete all resources with one specific label
